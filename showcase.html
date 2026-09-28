@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>韋林彣 Joyce — 沉浸式作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #EFEDE7;
+  --bg2:   #E6E2D8;
+  --blue:  #004AAD;
+  --brown: #53311B;
+  --red:   #BC0000;
+  --green: #00753D;
+  --text:  #1A1A1A;
+  --dim:   rgba(26,26,26,.48);
+  --line:  rgba(26,26,26,.10);
+  --glass: rgba(239,237,231,.75);
+  --glass-border: rgba(255,255,255,.68);
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', 'Noto Serif TC', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── LOADER ─────────────────────────────────── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: opacity .7s ease, visibility .7s;
+}
+#loader.out { opacity: 0; visibility: hidden; }
+
+.ring {
+  width: 44px; height: 44px;
+  border: 1.5px solid var(--line);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 1.1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loader-label {
+  font-size: .68rem;
+  letter-spacing: .2em;
+  color: var(--dim);
+}
+
+/* ── PROGRESS BAR ────────────────────────────── */
+#prog-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--blue);
+  width: 0%;
+  z-index: 300;
+  transition: width .08s linear;
+}
+
+/* ── NAV ─────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 58px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  background: var(--glass);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text);
+}
+.nav-brand-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: .95rem;
+  font-weight: 700;
+}
+.nav-dot {
+  width: 5px; height: 5px;
+  background: var(--blue);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.nav-brand-en {
+  font-size: .75rem;
+  font-weight: 400;
+  color: var(--dim);
+  letter-spacing: .06em;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.nav-link {
+  font-size: .78rem;
+  color: var(--dim);
+  text-decoration: none;
+  letter-spacing: .06em;
+  transition: color .2s;
+}
+.nav-link:hover { color: var(--text); }
+
+.nav-cta {
+  padding: 7px 20px;
+  background: var(--blue);
+  color: #fff !important;
+  border-radius: 20px;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  transition: background .2s;
+  text-decoration: none;
+}
+.nav-cta:hover { background: #0058d6; }
+
+/* ── SCROLL WRAPPER ──────────────────────────── */
+.scroll-wrap { height: 700vh; position: relative; }
+
+/* ── STICKY SCENE ────────────────────────────── */
+.scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* ── SOFT GLOWS ──────────────────────────────── */
+.glow-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  will-change: opacity;
+}
+.g-blue {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0,74,173,.14) 0%, transparent 65%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.g-warm {
+  width: 560px; height: 560px;
+  background: radial-gradient(circle, rgba(83,49,27,.10) 0%, transparent 65%);
+  top: 35%; left: 38%;
+  transform: translate(-50%, -50%);
+}
+.g-rose {
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(188,0,0,.09) 0%, transparent 65%);
+  bottom: 20%; right: 22%;
+}
+
+/* ── FRAME IMAGE ──────────────────────────────── */
+#frame-img {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  height: 86vh;
+  width: auto;
+  max-width: 90vw;
+  object-fit: contain;
+  z-index: 2;
+  /* Large mask: show all sphere content (arc spans full width late in animation),
+     only fade the very outer corners into cream background */
+  -webkit-mask-image: radial-gradient(
+    ellipse 88% 94% at 50% 50%,
+    black 72%,
+    rgba(0,0,0,.6) 86%,
+    rgba(0,0,0,.15) 95%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 88% 94% at 50% 50%,
+    black 72%,
+    rgba(0,0,0,.6) 86%,
+    rgba(0,0,0,.15) 95%,
+    transparent 100%
+  );
+}
+
+/* ── LEFT TEXT PANEL ──────────────────────────── */
+.text-panel {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(360px, 34vw);
+  height: 360px;
+  z-index: 10;
+}
+
+.t-state {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .45s ease, transform .45s ease;
+  pointer-events: none;
+}
+.t-state.on {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.eyebrow {
+  font-family: 'Space Grotesk', monospace;
+  font-size: .68rem;
+  letter-spacing: .2em;
+  color: var(--blue);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.headline-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text);
+  text-wrap: balance;
+  margin-bottom: 6px;
+}
+.headline-en {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(.9rem, 1.6vw, 1.15rem);
+  font-weight: 300;
+  letter-spacing: .09em;
+  color: var(--dim);
+  margin-bottom: 18px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 20px;
+}
+.chip {
+  font-size: .7rem;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: var(--dim);
+  background: rgba(255,255,255,.5);
+  letter-spacing: .03em;
+}
+.chip-blue {
+  background: rgba(0,74,173,.07);
+  border-color: rgba(0,74,173,.18);
+  color: var(--blue);
+}
+
+.body-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: .88rem;
+  line-height: 1.85;
+  color: var(--dim);
+  max-width: 30ch;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 10px 24px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 24px;
+  font-size: .8rem;
+  letter-spacing: .06em;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.cta-btn:hover { background: #0058d6; transform: translateX(3px); }
+
+.skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+.skill-pill {
+  font-size: .68rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: rgba(0,74,173,.08);
+  color: var(--blue);
+  letter-spacing: .03em;
+}
+
+/* ── RIGHT GLASS CARDS ────────────────────────── */
+.cards-col {
+  position: absolute;
+  right: 4%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+
+.g-card {
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 13px 20px;
+  min-width: 132px;
+  transition: box-shadow .3s;
+}
+.g-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,.07); }
+
+.g-card-label {
+  font-family: 'Space Grotesk', monospace;
+  font-size: .62rem;
+  letter-spacing: .18em;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
+.g-card-val {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  line-height: 1;
+}
+.g-card-val.blue { color: var(--blue); }
+
+/* active card highlight */
+.g-card.active-card {
+  border-color: rgba(0,74,173,.25);
+  background: rgba(0,74,173,.06);
+}
+
+/* ── OUTRO ───────────────────────────────────── */
+.outro {
+  background: var(--bg2);
+  padding: 96px 24px 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+.outro-tag {
+  font-size: .68rem;
+  letter-spacing: .2em;
+  color: var(--blue);
+}
+.outro-h {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.7rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--text);
+  text-wrap: balance;
+}
+.outro-sub {
+  font-family: 'Noto Serif TC', serif;
+  font-size: .9rem;
+  line-height: 1.85;
+  color: var(--dim);
+  max-width: 44ch;
+}
+.outro-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.btn-fill {
+  padding: 12px 30px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: .85rem;
+  letter-spacing: .05em;
+  transition: background .2s;
+}
+.btn-fill:hover { background: #0058d6; }
+.btn-out {
+  padding: 12px 30px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: .85rem;
+  letter-spacing: .05em;
+  transition: border-color .2s;
+}
+.btn-out:hover { border-color: rgba(26,26,26,.4); }
+
+/* ── MOBILE ───────────────────────────────────── */
+@media (max-width: 720px) {
+  nav { padding: 0 18px; }
+  .nav-link { display: none; }
+  .nav-brand-en { display: none; }
+
+  .text-panel {
+    width: 88%;
+    left: 6%;
+    top: auto;
+    bottom: 100px;
+    transform: none;
+    height: auto;
+    min-height: 260px;
+  }
+  .cards-col { display: none; }
+
+  #frame-img {
+    height: 70vh;
+    top: 46%;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="ring"></div>
+  <p class="loader-label">LOADING</p>
+</div>
+
+<!-- Progress -->
+<div id="prog-bar"></div>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-brand" href="portfolio.html">
+    <span class="nav-brand-zh">彣風製所</span>
+    <span class="nav-dot"></span>
+    <span class="nav-brand-en">wenwind</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="portfolio.html#works">作品集</a>
+    <a class="nav-link" href="portfolio.html#person">關於</a>
+    <a class="nav-cta" href="portfolio.html#contact">聯絡我</a>
+  </div>
+</nav>
+
+<!-- Scroll container -->
+<div class="scroll-wrap" id="scroll-wrap">
+  <div class="scene" id="scene">
+
+    <!-- Soft glows -->
+    <div class="glow-layer">
+      <div class="glow g-blue"  id="g-blue"></div>
+      <div class="glow g-warm"  id="g-warm"></div>
+      <div class="glow g-rose"  id="g-rose"></div>
+    </div>
+
+    <!-- Sphere frame -->
+    <img id="frame-img" src="frames/frame_0001.jpg" alt="sphere animation frame">
+
+    <!-- Left text -->
+    <div class="text-panel">
+
+      <!-- 0: Intro -->
+      <div class="t-state on" id="s0">
+        <span class="eyebrow">WENWIND — 彣風製所</span>
+        <h1 class="headline-zh">韋林彣</h1>
+        <p class="headline-en">Joyce Wei</p>
+        <div class="chips">
+          <span class="chip">建築設計師</span>
+          <span class="chip">室內設計師</span>
+          <span class="chip">商業攝影師</span>
+        </div>
+        <p class="body-zh">用設計思維觀看世界，<br>以影像語言述說空間的溫度。</p>
+      </div>
+
+      <!-- 1: Architecture / Design -->
+      <div class="t-state" id="s1">
+        <span class="eyebrow">01 — 空間設計</span>
+        <h2 class="headline-zh">從建築<br>到室內</h2>
+        <p class="body-zh" style="margin-top:14px;">
+          現任 B-STUDIO 室內部專案設計師。曾歷經工合建築、
+          十禾室內設計、Q-LAB 等事務所，熟悉設計流程的每一個環節。
+        </p>
+        <div class="skill-pills">
+          <span class="skill-pill">AutoCAD</span>
+          <span class="skill-pill">Rhino 8</span>
+          <span class="skill-pill">Grasshopper</span>
+          <span class="skill-pill">Enscape</span>
+          <span class="skill-pill">D5 Render</span>
+          <span class="skill-pill">Lumion</span>
+        </div>
+      </div>
+
+      <!-- 2: Photography -->
+      <div class="t-state" id="s2">
+        <span class="eyebrow">02 — 影像創作</span>
+        <h2 class="headline-zh">光，是<br>設計語言</h2>
+        <p class="body-zh" style="margin-top:14px;">
+          彣風製所深耕商業空間攝影。農村品牌、餐飲場域、
+          活動現場——13 個實際案例，遍及台灣各地。
+        </p>
+        <div class="skill-pills">
+          <span class="skill-pill">商業空間攝影</span>
+          <span class="skill-pill">品牌影像</span>
+          <span class="skill-pill">活動紀錄</span>
+          <span class="skill-pill">Lightroom</span>
+          <span class="skill-pill">Photoshop</span>
+        </div>
+      </div>
+
+      <!-- 3: Portfolio CTA -->
+      <div class="t-state" id="s3">
+        <span class="eyebrow">03 — 完整作品集</span>
+        <h2 class="headline-zh">13 個<br>真實案例</h2>
+        <p class="body-zh" style="margin-top:14px;">
+          從蜜工坊到大巨蛋 BabyGAP，每一張影像都有對應的
+          設計思考與現場溫度。
+        </p>
+        <a class="cta-btn" href="portfolio.html">
+          查看作品集 →
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Right cards -->
+    <div class="cards-col" id="cards-col">
+
+      <div class="g-card" id="card-frame-el">
+        <p class="g-card-label">FRAME</p>
+        <p class="g-card-val" id="card-frame">001</p>
+      </div>
+
+      <div class="g-card" id="card-prog-el">
+        <p class="g-card-label">PROGRESS</p>
+        <p class="g-card-val blue" id="card-prog">0%</p>
+      </div>
+
+      <div class="g-card" id="card-sec-el">
+        <p class="g-card-label">SECTION</p>
+        <p class="g-card-val" id="card-sec" style="font-size:.82rem; letter-spacing:.04em;">INTRO</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Outro -->
+<div class="outro">
+  <p class="outro-tag">WENWIND · 彣風製所 · 2025</p>
+  <h2 class="outro-h">讓影像為空間說話</h2>
+  <p class="outro-sub">
+    若您有商業空間攝影、農村品牌影像或設計合作的需求，
+    歡迎透過作品集頁面與我聯絡。
+  </p>
+  <div class="outro-btns">
+    <a class="btn-fill" href="portfolio.html">查看完整作品集</a>
+    <a class="btn-out"  href="portfolio.html#contact">聯絡 Joyce</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ── config ── */
+  const TOTAL   = 240;
+  const REVEAL  = 30;    // frames loaded before showing page
+  const TIMEOUT = 6000;  // fallback reveal timeout
+
+  const SRCS = Array.from({ length: TOTAL }, (_, i) =>
+    'frames/frame_' + String(i + 1).padStart(4, '0') + '.jpg'
+  );
+
+  /* scroll section breakpoints */
+  const SECTIONS = [
+    { id: 's0', label: 'INTRO',  start: 0,    end: 0.17 },
+    { id: 's1', label: 'DESIGN', start: 0.17, end: 0.43 },
+    { id: 's2', label: 'PHOTO',  start: 0.43, end: 0.70 },
+    { id: 's3', label: 'WORK',   start: 0.70, end: 1.01 },
+  ];
+
+  /* ── DOM refs ── */
+  const loader      = document.getElementById('loader');
+  const progBar     = document.getElementById('prog-bar');
+  const scrollWrap  = document.getElementById('scroll-wrap');
+  const frameImg    = document.getElementById('frame-img');
+  const cardFrameEl = document.getElementById('card-frame');
+  const cardProgEl  = document.getElementById('card-prog');
+  const cardSecEl   = document.getElementById('card-sec');
+  const gBlue       = document.getElementById('g-blue');
+  const gWarm       = document.getElementById('g-warm');
+  const gRose       = document.getElementById('g-rose');
+  const stateEls    = SECTIONS.map(s => document.getElementById(s.id));
+  const cardEls     = [
+    document.getElementById('card-frame-el'),
+    document.getElementById('card-prog-el'),
+    document.getElementById('card-sec-el'),
+  ];
+
+  /* ── preload ── */
+  const cache = new Array(TOTAL);
+  let loaded = 0;
+  let revealed = false;
+
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    loader.classList.add('out');
+  }
+
+  SRCS.forEach((src, i) => {
+    const img = new Image();
+    img.onload = img.onerror = () => { loaded++; if (loaded >= REVEAL) reveal(); };
+    img.src = src;
+    cache[i] = img;
+  });
+  setTimeout(reveal, TIMEOUT);
+
+  /* ── scroll logic ── */
+  let curFrame = 1;
+  let rafPending = false;
+
+  function tick() {
+    rafPending = false;
+
+    const st   = window.scrollY;
+    const top  = scrollWrap.offsetTop;
+    const span = scrollWrap.scrollHeight - window.innerHeight;
+    const p    = Math.max(0, Math.min(1, (st - top) / span));
+
+    /* progress bar */
+    progBar.style.width = (p * 100) + '%';
+
+    /* frame */
+    const target = Math.min(Math.floor(p * (TOTAL - 1)) + 1, TOTAL);
+    if (target !== curFrame) {
+      curFrame = target;
+      const c = cache[target - 1];
+      frameImg.src = (c && c.complete && c.naturalWidth > 0)
+        ? c.src
+        : SRCS[target - 1];
+    }
+
+    /* cards */
+    cardFrameEl.textContent = String(curFrame).padStart(3, '0');
+    cardProgEl.textContent  = Math.round(p * 100) + '%';
+
+    /* section */
+    let secIdx = SECTIONS.length - 1;
+    for (let i = 0; i < SECTIONS.length; i++) {
+      if (p >= SECTIONS[i].start && p < SECTIONS[i].end) { secIdx = i; break; }
+    }
+    cardSecEl.textContent = SECTIONS[secIdx].label;
+
+    /* text states */
+    stateEls.forEach((el, i) => {
+      if (i === secIdx) el.classList.add('on');
+      else              el.classList.remove('on');
+    });
+
+    /* card highlights */
+    cardEls.forEach((el, i) => {
+      el.classList.toggle('active-card', i === secIdx % cardEls.length);
+    });
+
+    /* glows per section */
+    const gBlueO = [0.9, 0.65, 0.30, 0.55][secIdx];
+    const gWarmO = [0.35, 0.85, 0.55, 0.25][secIdx];
+    const gRoseO = [0.15, 0.30, 0.80, 0.40][secIdx];
+    gBlue.style.opacity = gBlueO;
+    gWarm.style.opacity = gWarmO;
+    gRose.style.opacity = gRoseO;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!rafPending) { rafPending = true; requestAnimationFrame(tick); }
+  }, { passive: true });
+
+  tick();
+})();
+</script>
+</body>
+</html>

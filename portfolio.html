@@ -1,0 +1,2370 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>wenwind 彣風製所 — 商業空間攝影</title>
+<meta name="description" content="wenwind 彣風製所。有設計背景的攝影師，專注商業空間攝影與活動現場紀錄。進場前讀得懂動線、材質與光線走向。">
+<meta property="og:title" content="wenwind 彣風製所 — 商業空間攝影">
+<meta property="og:description" content="有設計背景的攝影師。進場前讀得懂動線、材質與光線走向，知道要站在哪裡、等哪一刻。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Noto+Sans+TC:wght@200;300;400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════ */
+:root {
+  --blue:   #004AAD;
+  --brown:  #53311B;
+  --red:    #BC0000;
+  --green:  #00753D;
+  --cream:  #EFEDE7;
+
+  --bg:     #EFEDE7;
+  --bg2:    #E6E2D9;
+  --text:   #1A1A1A;
+  --text2:  #53311B;
+  --text3:  #888070;
+  --accent: #004AAD;
+  --line:   rgba(0,74,173,.14);
+  --line2:  rgba(0,74,173,.38);
+
+  /* sphere / dark section */
+  --dk:     #050812;
+  --dk-g1:  #1B44C8;
+  --dk-g2:  #6B28B5;
+  --dk-g3:  #C42828;
+  --dk-txt: #E8EBF8;
+  --dk-dim: rgba(232,235,248,.5);
+  --dk-gl:  rgba(255,255,255,.07);
+  --dk-glb: rgba(255,255,255,.11);
+}
+/* Light-only: dark mode removed, site is permanently cream/light */
+
+/* ═══════════════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════════════ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--dk);
+  color: var(--dk-txt);
+  font-family: 'Noto Sans TC', system-ui, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width:100%; display:block; }
+a { color:inherit; text-decoration:none; }
+button { background:none; border:none; cursor:pointer; font:inherit; color:inherit; }
+
+/* ═══════════════════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════════════════ */
+.f-archivo { font-family:'Archivo',sans-serif; }
+.f-mono    { font-family:'IBM Plex Mono',monospace; }
+.f-tc      { font-family:'Noto Sans TC',sans-serif; }
+
+.label {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--text3);
+}
+.section-num {
+  font-family:'Archivo',sans-serif;
+  font-size:11px; font-weight:800;
+  letter-spacing:.22em; color:var(--accent);
+}
+.section-title {
+  font-family:'Archivo',sans-serif;
+  font-size:clamp(22px,3vw,32px);
+  font-weight:800; line-height:1.1;
+  color:var(--text); text-wrap:balance;
+}
+.body-tc {
+  font-family:'Noto Sans TC',sans-serif;
+  font-weight:300; font-size:14px; line-height:1.8;
+  color:var(--text2);
+}
+
+/* ═══════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════ */
+.wrap {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(16px,5vw,80px);
+}
+section { padding-block: clamp(60px,8vw,100px); }
+section + section { border-top:1px solid var(--line); }
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px,4vw,60px); }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+
+@media(max-width:680px) {
+  .grid-2 { grid-template-columns:1fr; }
+  .grid-3 { grid-template-columns:1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════ */
+.nav-outer {
+  position: fixed;
+  top: env(safe-area-inset-top,0px);
+  left: 0; right: 0;
+  z-index: 100;
+  background: rgba(5,8,18,.65);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  transition: background .5s, border-color .5s;
+}
+.nav-outer.light {
+  background: rgba(239,237,231,.88);
+  border-bottom-color: var(--line);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  gap: 24px;
+}
+.nav-logo {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:18px; font-weight:700;
+  display:flex; align-items:center; gap:6px;
+  white-space:nowrap; color:var(--dk-txt);
+  transition:color .5s;
+}
+.nav-outer.light .nav-logo { color:var(--text); }
+.nav-logo .ww {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:16px; font-weight:500;
+  letter-spacing:.04em;
+}
+.nav-logo .green { color:var(--green); }
+.dot-red {
+  display:inline-block;
+  width:6px; height:6px;
+  background:var(--red);
+  border-radius:50%;
+  flex-shrink:0;
+}
+.nav-logo .zh {
+  font-size:11px; font-weight:200;
+  color:var(--dk-dim);
+  letter-spacing:.12em;
+  transition:color .5s;
+}
+.nav-outer.light .nav-logo .zh { color:var(--text3); }
+.nav-outer.light .nav-logo .ww { color:var(--text); }
+.nav-outer.light .nav-logo .zh { color:var(--text3); }
+.nav-links {
+  display:flex; gap:24px;
+  list-style:none;
+}
+.nav-links a {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--dk-dim);
+  transition:color .2s, color .5s;
+}
+.nav-outer.light .nav-links a { color:var(--text3); }
+.nav-links a:hover { color:var(--dk-txt); }
+.nav-outer.light .nav-links a:hover { color:var(--accent); }
+.nav-right { display:flex; align-items:center; gap:12px; }
+.btn-theme {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.12em;
+  color:var(--text3); padding:4px 8px;
+  border:1px solid var(--line);
+}
+.btn-theme:hover { border-color:var(--line2); color:var(--text); }
+.btn-cta {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  background:var(--accent); color:var(--cream);
+  padding:8px 16px;
+}
+.btn-cta:hover { opacity:.85; }
+
+/* brand band — only visible in light mode */
+.brand-band {
+  height:3px;
+  background:linear-gradient(to right,
+    var(--blue)  0%  25%,
+    var(--brown) 25% 50%,
+    var(--red)   50% 75%,
+    var(--green) 75% 100%
+  );
+  opacity:0; transition:opacity .5s;
+}
+.nav-outer.light .brand-band { opacity:1; }
+
+@media(max-width:640px) {
+  .nav-links { display:none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════════════════ */
+#loader {
+  position:fixed; inset:0; z-index:200;
+  background:var(--dk);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:20px;
+  transition:opacity .7s, visibility .7s;
+}
+#loader.out { opacity:0; visibility:hidden; pointer-events:none; }
+#ldr-pct {
+  font-family:'Archivo',sans-serif;
+  font-size:clamp(52px,9vw,90px);
+  font-weight:700; letter-spacing:-.02em;
+  color:var(--dk-txt); font-variant-numeric:tabular-nums;
+}
+.ldr-track {
+  width:200px; height:1px;
+  background:rgba(255,255,255,.1); position:relative;
+}
+#ldr-fill {
+  position:absolute; inset-block:0; left:0; width:0;
+  background:linear-gradient(to right, var(--dk-g1), var(--dk-g2));
+  transition:width .2s ease;
+}
+.ldr-label {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.28em; color:var(--dk-dim);
+}
+
+/* ═══════════════════════════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════════════════════════ */
+#pbar {
+  position:fixed; top:0; left:0; z-index:300;
+  height:2px; width:0;
+  background:linear-gradient(to right, var(--dk-g1), var(--dk-g2) 55%, var(--dk-g3));
+  pointer-events:none;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SPHERE SCENE
+═══════════════════════════════════════════════════════ */
+#scene-wrap { position:relative; height:600vh; }
+#sticky {
+  position:sticky; top:0;
+  width:100%; height:100vh;
+  overflow:hidden; background:var(--dk);
+}
+.glow {
+  position:absolute; border-radius:50%;
+  filter:blur(90px); pointer-events:none;
+  mix-blend-mode:screen;
+}
+#g-center {
+  width:70vw; height:70vh;
+  background:radial-gradient(circle, rgba(27,68,200,.42) 0%, transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+}
+#g-violet {
+  width:45vw; height:45vh;
+  background:radial-gradient(circle, rgba(107,40,181,.28) 0%, transparent 70%);
+  top:-8%; left:-4%;
+}
+#g-ember {
+  width:38vw; height:38vh;
+  background:radial-gradient(circle, rgba(196,40,40,.20) 0%, transparent 70%);
+  bottom:4%; right:4%;
+}
+#frame-wrap {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+}
+#frame-img {
+  height:100%; width:auto; max-width:100%;
+  object-fit:contain; user-select:none; -webkit-user-drag:none;
+}
+.s-text {
+  position:absolute; pointer-events:none;
+  opacity:0; transition:opacity .5s ease, transform .5s ease;
+  will-change:opacity, transform;
+}
+.s-text.on { opacity:1; }
+#t-intro {
+  bottom:13%; left:clamp(24px,6vw,90px);
+  transform:translateY(16px);
+}
+#t-intro.on { transform:translateY(0); }
+#t-intro .brand-tag {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.28em; color:var(--dk-dim); margin-bottom:14px;
+}
+#t-intro h1 {
+  font-family:'Archivo',sans-serif;
+  font-size:clamp(48px,9vw,120px);
+  font-weight:800; line-height:.95; letter-spacing:-.025em;
+  text-shadow:-3px 0 6px rgba(27,68,200,.7), 3px 0 6px rgba(196,40,40,.5);
+  color:var(--dk-txt);
+}
+#t-intro .tagline {
+  margin-top:16px;
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:clamp(12px,1.4vw,16px); font-weight:300;
+  color:var(--dk-dim); max-width:360px; line-height:1.7;
+}
+.feat-t {
+  left:clamp(24px,6vw,90px); top:50%;
+  transform:translateY(calc(-50% + 18px));
+}
+.feat-t.on { transform:translateY(-50%); }
+.feat-t .fn {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.26em; color:var(--dk-dim); margin-bottom:10px;
+}
+.feat-t h2 {
+  font-family:'Archivo',sans-serif;
+  font-size:clamp(32px,5vw,64px);
+  font-weight:800; line-height:1.05; letter-spacing:-.01em;
+  color:var(--dk-txt);
+}
+.feat-t .fd {
+  margin-top:14px;
+  font-size:clamp(12px,1.2vw,14px); font-weight:300;
+  color:var(--dk-dim); max-width:300px; line-height:1.85;
+}
+.feat-t .chips-dark {
+  display:flex; flex-wrap:wrap; gap:7px; margin-top:16px;
+}
+.chips-dark .chip-d {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.14em;
+  border:1px solid rgba(255,255,255,.18);
+  padding:4px 12px; color:var(--dk-dim);
+}
+#panel {
+  position:absolute;
+  right:clamp(20px,4vw,64px); top:50%; transform:translateY(-50%);
+  width:clamp(170px,17vw,230px);
+  display:flex; flex-direction:column; gap:10px;
+  opacity:0; pointer-events:none; transition:opacity .5s;
+}
+#panel.on { opacity:1; pointer-events:auto; }
+.gc {
+  backdrop-filter:blur(30px) saturate(160%);
+  -webkit-backdrop-filter:blur(30px) saturate(160%);
+  background:var(--dk-gl);
+  border:1px solid var(--dk-glb); padding:14px 16px;
+  transition:background .25s, border-color .25s, transform .25s;
+}
+.gc:hover { background:rgba(255,255,255,.10); transform:translateX(-4px); }
+.gc.hi { background:rgba(27,68,200,.16); border-color:rgba(27,68,200,.42); }
+.gc .gl {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.25em; color:var(--dk-dim); margin-bottom:3px;
+}
+.gc .gv {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:14px; font-weight:500; font-variant-numeric:tabular-nums;
+  color:var(--dk-txt);
+}
+.gc .gs { font-size:11px; color:var(--dk-dim); margin-top:2px; font-weight:300; }
+#hint {
+  position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  transition:opacity .4s;
+}
+#hint span {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.32em; color:var(--dk-dim);
+}
+.arr-line {
+  width:1px; height:44px;
+  background:linear-gradient(to bottom, var(--dk-dim), transparent);
+  animation:bounce 2s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%,100% { opacity:.2; transform:scaleY(.5) translateY(-8px); }
+  55%      { opacity:1;  transform:scaleY(1) translateY(0);    }
+}
+.bridge {
+  height:120px;
+  background:linear-gradient(to bottom, var(--dk) 0%, var(--cream) 100%);
+}
+.light-zone {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ═══════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════ */
+.hero {
+  padding-top: clamp(48px,6vw,80px);
+  padding-bottom: clamp(48px,6vw,80px);
+  position:relative; overflow:hidden;
+  border-top:none;
+}
+@keyframes wind-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 200px 0; }
+}
+.hero-wind {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    repeating-linear-gradient(-14deg,
+      transparent 0, transparent 48px,
+      rgba(0,74,173,.028) 48px, rgba(0,74,173,.028) 49px
+    );
+  animation: wind-drift 12s linear infinite;
+}
+[data-theme="dark"] .hero-wind,
+@media(prefers-color-scheme:dark){.hero-wind}{
+  background-image:
+    repeating-linear-gradient(-14deg,
+      transparent 0, transparent 48px,
+      rgba(74,143,219,.04) 48px, rgba(74,143,219,.04) 49px
+    );
+}
+.hero-inner {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:clamp(24px,5vw,80px);
+  align-items:start;
+  position:relative;
+}
+.hero-eyebrow {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; font-weight:500;
+  letter-spacing:.22em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:20px;
+}
+.hero-h1 {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:clamp(22px,3.8vw,42px);
+  font-weight:400; line-height:1.4;
+  letter-spacing:.02em;
+  color:var(--text);
+  text-wrap:balance;
+  margin-bottom:24px;
+}
+.hero-h1 .wind { color:var(--accent); }
+.hero-intro {
+  font-size:14px; font-weight:300;
+  color:var(--text2); line-height:1.85;
+  max-width:480px; margin-bottom:16px;
+}
+.hero-en {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px; color:var(--text3);
+  letter-spacing:.06em;
+}
+.hero-ids {
+  min-width:200px;
+  border-left:1px solid var(--line);
+  padding-left:20px;
+  display:flex; flex-direction:column; gap:20px;
+}
+.id-item {}
+.id-role {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; font-weight:500;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:4px;
+}
+.id-desc {
+  font-size:13px; font-weight:300;
+  color:var(--text2); line-height:1.5;
+}
+@media(max-width:680px){
+  .hero-inner { grid-template-columns:1fr; }
+  .hero-ids { border-left:none; border-top:1px solid var(--line); padding-left:0; padding-top:20px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   TRUST BAR
+═══════════════════════════════════════════════════════ */
+.trust { padding-block:32px; background:var(--bg2); }
+.trust-inner {
+  display:flex; flex-wrap:wrap;
+  gap:0;
+}
+.trust-item {
+  flex:1 1 180px;
+  padding:16px clamp(16px,3vw,32px);
+  border-right:1px solid var(--line);
+  display:flex; flex-direction:column; gap:4px;
+}
+.trust-item:last-child { border-right:none; }
+.trust-num {
+  font-family:'Archivo',sans-serif;
+  font-size:clamp(24px,4vw,36px);
+  font-weight:800; color:var(--accent);
+  line-height:1;
+}
+.trust-lbl {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--text3);
+}
+
+/* ═══════════════════════════════════════════════════════
+   WORK INDEX
+═══════════════════════════════════════════════════════ */
+.work-header {
+  display:flex; align-items:baseline;
+  justify-content:space-between;
+  flex-wrap:wrap; gap:16px;
+  margin-bottom:32px;
+}
+.filter-row {
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.filter-btn {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  padding:6px 12px;
+  border:1px solid var(--line);
+  color:var(--text3);
+  transition:all .2s;
+}
+.filter-btn:hover { border-color:var(--line2); color:var(--text); }
+.filter-btn.active { background:var(--accent); color:var(--cream); border-color:var(--accent); }
+
+.work-grid { display:flex; flex-direction:column; }
+.work-card {
+  border-bottom:1px solid var(--line);
+  cursor:pointer;
+  transition:background .2s;
+}
+.work-card:first-child { border-top:1px solid var(--line); }
+.work-card:hover { background:var(--bg2); }
+.work-card-head {
+  display:grid;
+  grid-template-columns:60px 1fr auto;
+  align-items:center;
+  gap:16px;
+  padding:14px 0;
+}
+.work-no {
+  font-family:'Archivo',sans-serif;
+  font-size:13px; font-weight:800;
+  color:var(--text3); letter-spacing:.06em;
+}
+.work-name {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:15px; font-weight:400;
+  color:var(--text);
+}
+.work-meta-row {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--text3); margin-top:3px;
+}
+.work-icon-wrap {
+  display:flex; align-items:center; gap:10px;
+}
+.work-type-tag {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); white-space:nowrap;
+  display:none;
+}
+@media(min-width:600px){ .work-type-tag { display:block; } }
+.work-svg {
+  width:22px; height:22px;
+  color:var(--text3); flex-shrink:0;
+}
+.chevron {
+  width:16px; height:16px;
+  color:var(--text3);
+  transition:transform .3s;
+  flex-shrink:0;
+}
+.work-card.open .chevron { transform:rotate(90deg); }
+.work-card.open .work-name { color:var(--accent); }
+
+.work-detail {
+  display:none;
+  padding:0 0 20px 76px;
+}
+.work-card.open .work-detail { display:block; }
+.work-desc {
+  font-size:13px; font-weight:300;
+  color:var(--text2); line-height:1.85;
+  max-width:560px; margin-bottom:12px;
+  border-left:2px solid var(--accent);
+  padding-left:14px;
+}
+.work-delivery {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.1em;
+  color:var(--text3);
+}
+.work-delivery span { color:var(--accent); margin-right:4px; }
+.work-drive-link {
+  display:inline-flex; align-items:center; gap:5px;
+  margin-top:10px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; font-weight:500; letter-spacing:.12em;
+  color:var(--accent);
+  border:1px solid var(--line2);
+  padding:4px 10px;
+  text-transform:uppercase;
+  transition:background .15s, color .15s;
+}
+.work-drive-link:hover { background:var(--accent); color:var(--bg); }
+.work-drive-link svg { width:10px; height:10px; flex-shrink:0; }
+
+/* ── Gallery strip ── */
+.gallery-strip {
+  display:flex; gap:6px;
+  overflow-x:auto; -webkit-overflow-scrolling:touch;
+  margin-top:14px; margin-bottom:4px;
+  padding-bottom:6px;
+  scrollbar-width:thin; scrollbar-color:var(--line2) transparent;
+}
+.gallery-strip::-webkit-scrollbar { height:4px; }
+.gallery-strip::-webkit-scrollbar-track { background:transparent; }
+.gallery-strip::-webkit-scrollbar-thumb { background:var(--line2); border-radius:2px; }
+.gallery-img {
+  height:140px; width:auto; flex-shrink:0;
+  object-fit:cover; cursor:zoom-in;
+  border-radius:3px;
+  transition:opacity .15s;
+}
+.gallery-img:hover { opacity:.82; }
+
+/* ── Lightbox ── */
+#lightbox {
+  position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,.93);
+  display:flex; align-items:center; justify-content:center;
+  cursor:zoom-out;
+}
+#lightbox[hidden] { display:none; }
+#lb-img {
+  max-height:90vh; max-width:92vw;
+  object-fit:contain; cursor:default;
+  border-radius:2px;
+  user-select:none;
+}
+#lb-close {
+  position:absolute; top:18px; right:22px;
+  color:rgba(255,255,255,.65); font-size:22px; line-height:1;
+  cursor:pointer; background:none; border:none; padding:4px;
+}
+#lb-prev, #lb-next {
+  position:absolute; top:50%; transform:translateY(-50%);
+  color:rgba(255,255,255,.55); font-size:18px;
+  cursor:pointer; background:rgba(0,0,0,.35); border:none;
+  padding:14px 16px; border-radius:3px;
+  transition:color .15s, background .15s;
+}
+#lb-prev:hover, #lb-next:hover { color:#fff; background:rgba(0,0,0,.6); }
+#lb-prev { left:16px; }
+#lb-next { right:16px; }
+#lb-counter {
+  position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
+  font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em;
+  color:rgba(255,255,255,.4);
+}
+
+@media(max-width:480px){
+  .work-card-head { grid-template-columns:44px 1fr auto; gap:10px; }
+  .work-detail { padding-left:54px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   FEATURED CASES
+═══════════════════════════════════════════════════════ */
+.featured-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:40px;
+}
+.feat-card {
+  background:var(--bg);
+  padding:clamp(20px,3vw,36px);
+}
+.feat-card:hover { background:var(--bg2); }
+.feat-card-icon { margin-bottom:20px; }
+.feat-num-label {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:12px;
+}
+.feat-no {
+  font-family:'Archivo',sans-serif;
+  font-size:11px; font-weight:800;
+  letter-spacing:.16em; color:var(--accent);
+}
+.feat-type-tag {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--text3);
+}
+.feat-name {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:clamp(16px,2vw,20px);
+  font-weight:400; color:var(--text);
+  margin-bottom:6px; line-height:1.3;
+}
+.feat-loc {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--text3); margin-bottom:16px;
+}
+.feat-desc {
+  font-size:13px; font-weight:300;
+  color:var(--text2); line-height:1.85;
+  border-left:1px solid var(--line2);
+  padding-left:12px; margin-bottom:16px;
+}
+.feat-delivery {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--text3);
+  padding-top:16px;
+  border-top:1px solid var(--line);
+}
+
+.feat-img-slot {
+  aspect-ratio:4/3;
+  background:var(--bg2);
+  border:1px dashed var(--line2);
+  display:flex; align-items:center; justify-content:center;
+  margin-top:16px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text3);
+}
+
+@media(max-width:768px){
+  .featured-grid { grid-template-columns:1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════════════════ */
+.process-steps {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:40px;
+}
+.process-step {
+  background:var(--bg);
+  padding:clamp(20px,3vw,36px);
+}
+.step-num {
+  font-family:'Archivo',sans-serif;
+  font-size:clamp(28px,4vw,48px);
+  font-weight:800;
+  color:var(--line2);
+  line-height:1; margin-bottom:16px;
+  font-variant-numeric:tabular-nums;
+}
+.step-title {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:15px; font-weight:400;
+  color:var(--accent); margin-bottom:10px;
+}
+.step-desc {
+  font-size:13px; font-weight:300;
+  color:var(--text2); line-height:1.85;
+}
+
+@media(max-width:768px){
+  .process-steps { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:480px){
+  .process-steps { grid-template-columns:1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════════════ */
+.services-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:40px;
+}
+.service-card {
+  background:var(--bg);
+  padding:clamp(24px,3vw,40px);
+}
+.service-card:hover { background:var(--bg2); }
+.service-head {
+  display:flex; align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:14px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+}
+.service-name {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:clamp(16px,2vw,20px);
+  font-weight:400; color:var(--text);
+}
+.service-price {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.1em;
+  color:var(--text3); white-space:nowrap;
+}
+.service-desc {
+  font-size:13px; font-weight:300;
+  color:var(--text2); line-height:1.85;
+  margin-bottom:16px;
+}
+.service-includes {
+  display:flex; flex-direction:column; gap:6px;
+}
+.service-item {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--text3); display:flex; align-items:center; gap:8px;
+}
+.service-item::before {
+  content:''; display:block;
+  width:12px; height:1px;
+  background:var(--accent); flex-shrink:0;
+}
+
+@media(max-width:800px){
+  .services-grid { grid-template-columns:1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   COLLABORATION FLOW
+═══════════════════════════════════════════════════════ */
+.flow-steps {
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:0;
+  margin-top:40px;
+  position:relative;
+}
+.flow-steps::before {
+  content:'';
+  position:absolute;
+  top:18px; left:0; right:0;
+  height:1px; background:var(--line2);
+  z-index:0;
+}
+.flow-step {
+  position:relative; z-index:1;
+  padding:0 8px;
+  text-align:center;
+}
+.flow-dot {
+  width:10px; height:10px;
+  background:var(--bg);
+  border:2px solid var(--accent);
+  border-radius:50%;
+  margin:14px auto 12px;
+}
+.flow-step:first-child .flow-dot { background:var(--accent); }
+.flow-step:last-child  .flow-dot { background:var(--accent); }
+.flow-label {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--text3); line-height:1.5;
+}
+
+@media(max-width:640px){
+  .flow-steps { grid-template-columns:repeat(2,1fr); }
+  .flow-steps::before { display:none; }
+  .flow-step { border-left:2px solid var(--line2); padding:0 0 0 16px; text-align:left; margin-bottom:16px; }
+  .flow-dot { margin:0 0 8px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   CHECKLIST
+═══════════════════════════════════════════════════════ */
+.checklist {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:40px;
+}
+.checklist-item {
+  background:var(--bg);
+  padding:clamp(16px,2.5vw,28px);
+  display:flex; align-items:flex-start; gap:14px;
+}
+.check-mark {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px; color:var(--accent);
+  margin-top:2px; flex-shrink:0;
+}
+.check-text { font-size:13px; font-weight:300; color:var(--text2); line-height:1.7; }
+.check-text strong { font-weight:400; color:var(--text); display:block; margin-bottom:2px; }
+
+@media(max-width:560px){ .checklist { grid-template-columns:1fr; } }
+
+/* ═══════════════════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════════════════ */
+.testi-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:40px;
+}
+.testi-card {
+  background:var(--bg);
+  padding:clamp(20px,3vw,36px);
+}
+.testi-quote {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:14px; font-weight:300;
+  color:var(--text2); line-height:1.85;
+  margin-bottom:20px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+.testi-mark {
+  font-family:'Archivo',sans-serif;
+  font-size:28px; font-weight:800;
+  color:var(--line2); line-height:1;
+  margin-bottom:8px;
+}
+.testi-who {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent);
+}
+
+@media(max-width:768px){ .testi-grid { grid-template-columns:1fr; } }
+
+/* ═══════════════════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════════════════ */
+.faq-list { margin-top:40px; }
+.faq-item {
+  border-bottom:1px solid var(--line);
+}
+.faq-item:first-child { border-top:1px solid var(--line); }
+.faq-q {
+  width:100%; text-align:left;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:18px 0;
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:14px; font-weight:400; color:var(--text);
+  cursor:pointer;
+}
+.faq-q:hover { color:var(--accent); }
+.faq-q::after {
+  content:'+';
+  font-family:'Archivo',sans-serif;
+  font-size:18px; color:var(--accent);
+  transition:transform .25s; flex-shrink:0;
+}
+.faq-item.open .faq-q::after { transform:rotate(45deg); }
+.faq-a {
+  display:none;
+  padding:0 0 20px;
+  font-size:13px; font-weight:300;
+  color:var(--text2); line-height:1.85;
+  border-left:2px solid var(--accent);
+  padding-left:14px;
+}
+.faq-item.open .faq-a { display:block; }
+
+/* ═══════════════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════════════ */
+.about-inner {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(40px,6vw,80px);
+}
+.about-pillars {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-bottom:32px;
+}
+.about-pillar {
+  background:var(--bg);
+  padding:20px 24px;
+  display:flex; align-items:baseline; gap:14px;
+}
+.pillar-zh {
+  font-family:'Noto Sans TC',sans-serif;
+  font-size:16px; font-weight:400; color:var(--text);
+  white-space:nowrap;
+}
+.pillar-desc {
+  font-size:13px; font-weight:300;
+  color:var(--text2); line-height:1.7;
+}
+.about-bio { font-size:13px; font-weight:300; color:var(--text2); line-height:1.9; }
+.about-table {
+  margin-top:28px;
+  border-collapse:collapse; width:100%;
+}
+.about-table tr { border-bottom:1px solid var(--line); }
+.about-table td {
+  padding:10px 0;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.08em; vertical-align:top;
+}
+.about-table td:first-child { color:var(--text3); width:100px; text-transform:uppercase; }
+.about-table td:last-child  { color:var(--text2); }
+
+@media(max-width:680px){ .about-inner { grid-template-columns:1fr; } .about-photo { grid-column:1 !important; grid-row:auto !important; } }
+
+/* ═══════════════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════════════ */
+.contact-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  margin-top:40px;
+}
+.contact-card {
+  background:var(--bg);
+  padding:clamp(20px,3vw,36px);
+  display:flex; flex-direction:column; gap:8px;
+}
+.contact-method {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--text3); margin-bottom:4px;
+}
+.contact-val {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:clamp(13px,1.8vw,16px);
+  color:var(--text);
+  word-break:break-all;
+}
+.copy-btn {
+  margin-top:8px; align-self:flex-start;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--accent);
+  border:1px solid var(--line2);
+  padding:6px 12px;
+  transition:all .2s;
+}
+.copy-btn:hover { background:var(--accent); color:var(--cream); border-color:var(--accent); }
+.copy-btn.copied { background:var(--green); color:var(--cream); border-color:var(--green); }
+
+@media(max-width:560px){ .contact-grid { grid-template-columns:1fr; } }
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════ */
+.footer {
+  border-top:1px solid var(--line);
+  padding-block:32px;
+}
+.footer-inner {
+  display:flex; flex-wrap:wrap;
+  align-items:center; justify-content:space-between;
+  gap:16px;
+}
+.footer-logo {
+  display:flex; align-items:center; gap:8px;
+}
+.footer-ww {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:14px; font-weight:500;
+  color:var(--text);
+}
+.footer-ww .green { color:var(--green); }
+.footer-tagline {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text3);
+}
+.footer-since {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; color:var(--text3); letter-spacing:.1em;
+}
+
+/* ═══════════════════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════════════════ */
+.mt-8  { margin-top:8px; }
+.mt-16 { margin-top:16px; }
+.mt-40 { margin-top:40px; }
+.hidden{ display:none !important; }
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after { transition:none !important; animation:none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div id="ldr-pct">0%</div>
+  <div class="ldr-track"><div id="ldr-fill"></div></div>
+  <p class="ldr-label">Loading sequence</p>
+</div>
+
+<!-- Progress bar -->
+<div id="pbar"></div>
+
+<!-- ══════════ SVG ICON SPRITES ══════════ -->
+<svg hidden aria-hidden="true" style="position:absolute">
+  <symbol id="ic-space" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+    <rect x="2" y="6" width="28" height="22"/>
+    <path d="M10 28V16a6 6 0 0 1 12 0"/>
+    <line x1="2" y1="6" x2="32" y2="6"/>
+  </symbol>
+  <symbol id="ic-farm" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+    <line x1="16" y1="28" x2="16" y2="6"/>
+    <path d="M16 20 Q12 16 8 18"/>
+    <path d="M16 16 Q20 12 24 14"/>
+    <path d="M16 12 Q13 8 10 10"/>
+    <circle cx="16" cy="6" r="2"/>
+  </symbol>
+  <symbol id="ic-dining" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+    <path d="M8 10 Q8 22 16 24 Q24 22 24 10Z"/>
+    <line x1="16" y1="24" x2="16" y2="30"/>
+    <line x1="12" y1="30" x2="20" y2="30"/>
+    <path d="M6 4 L6 14"/>
+    <path d="M10 4 L10 14"/>
+    <path d="M6 14 Q8 18 10 14"/>
+  </symbol>
+  <symbol id="ic-event" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+    <circle cx="16" cy="16" r="12"/>
+    <circle cx="16" cy="16" r="4"/>
+    <line x1="16" y1="4" x2="16" y2="8"/>
+    <line x1="16" y1="24" x2="16" y2="28"/>
+    <line x1="4" y1="16" x2="8" y2="16"/>
+    <line x1="24" y1="16" x2="28" y2="16"/>
+    <line x1="7.5" y1="7.5" x2="10.3" y2="10.3"/>
+    <line x1="21.7" y1="21.7" x2="24.5" y2="24.5"/>
+  </symbol>
+  <symbol id="ic-video" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+    <rect x="2" y="8" width="22" height="16"/>
+    <path d="M24 13 L30 10 L30 22 L24 19"/>
+    <line x1="7" y1="8" x2="7" y2="4"/>
+    <line x1="12" y1="8" x2="12" y2="4"/>
+    <line x1="17" y1="8" x2="17" y2="4"/>
+    <line x1="7" y1="24" x2="7" y2="28"/>
+    <line x1="12" y1="24" x2="12" y2="28"/>
+    <line x1="17" y1="24" x2="17" y2="28"/>
+  </symbol>
+</svg>
+
+<!-- ══════════ NAV ══════════ -->
+<div class="nav-outer" id="main-nav">
+  <div class="brand-band"></div>
+  <div class="wrap">
+    <nav class="nav" aria-label="主要導覽">
+      <div class="nav-logo">
+        <span class="ww">wen<span class="green">w</span>ind</span>
+        <span class="dot-red" aria-hidden="true"></span>
+        <span class="zh">彣風製所</span>
+      </div>
+      <ul class="nav-links" role="list">
+        <li><a href="#works">作品</a></li>
+        <li><a href="#services">服務</a></li>
+        <li><a href="#about">關於</a></li>
+        <li><a href="#contact">聯絡</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#contact" class="btn-cta">預約拍攝</a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ══════════ SPHERE SCROLL SCENE ══════════ -->
+<div id="scene-wrap">
+  <div id="sticky">
+
+    <div id="frame-wrap">
+      <img id="frame-img" src="frames/frame_0001.jpg" alt="sphere" draggable="false">
+    </div>
+
+    <!-- Glows on top of frame (screen blend) -->
+    <div class="glow" id="g-center"></div>
+    <div class="glow" id="g-violet"></div>
+    <div class="glow" id="g-ember"></div>
+
+    <!-- Intro text -->
+    <div class="s-text" id="t-intro">
+      <p class="brand-tag">WENWIND STUDIO · 彣風製所</p>
+      <h1>空間<br>攝影</h1>
+      <p class="tagline">有設計背景的攝影師，進場前讀得懂動線、材質與光線走向，知道要站在哪裡、等哪一刻。</p>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="s-text feat-t" id="f1">
+      <p class="fn">01 &nbsp;/&nbsp; Design Background</p>
+      <h2>設計師<br>的攝影眼</h2>
+      <p class="fd">建築系訓練 × 室內設計實務，讓每一次進場都能讀懂空間的動線、材質質地與光的走向。</p>
+      <div class="chips-dark">
+        <span class="chip-d">設計</span>
+        <span class="chip-d">空間影像</span>
+        <span class="chip-d">品牌行銷</span>
+        <span class="chip-d">斜槓接案</span>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="s-text feat-t" id="f2">
+      <p class="fn">02 &nbsp;/&nbsp; Portfolio</p>
+      <h2>作品<br>索引</h2>
+      <p class="fd">空間影像、農村品牌、活動現場——每張影像都有對應的設計思考與現場溫度。</p>
+      <div class="chips-dark">
+        <span class="chip-d">空間影像</span>
+        <span class="chip-d">品牌行銷</span>
+        <span class="chip-d">斜槓接案</span>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="s-text feat-t" id="f3">
+      <p class="fn">03 &nbsp;/&nbsp; Let's Work Together</p>
+      <h2>開始<br>合作</h2>
+      <p class="fd">若您有空間攝影、品牌影像或設計合作的需求，歡迎直接聯絡。</p>
+      <div class="chips-dark" style="margin-top:24px">
+        <a class="chip-d" href="#contact" style="cursor:pointer;border-color:rgba(0,74,173,.6);color:#A8C4FF">查看聯絡方式 →</a>
+        <a class="chip-d" href="#works" style="cursor:pointer">作品索引 ↓</a>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div id="panel">
+      <div class="gc" id="gc1">
+        <div class="gl">Frame</div>
+        <div class="gv" id="gv-frame">001 / 240</div>
+        <div class="gs">Scroll to animate</div>
+      </div>
+      <div class="gc" id="gc2">
+        <div class="gl">Progress</div>
+        <div class="gv" id="gv-pct">0%</div>
+        <div class="gs">Scene position</div>
+      </div>
+      <div class="gc" id="gc3">
+        <div class="gl">Section</div>
+        <div class="gv" id="gv-sec">Intro</div>
+        <div class="gs">Current view</div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div id="hint">
+      <span>Scroll</span>
+      <div class="arr-line"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Bridge: dark → cream -->
+<div class="bridge"></div>
+
+<!-- ══ Light zone: all cream-background sections ══ -->
+<div class="light-zone">
+
+<!-- ══════════ TRUST BAR ══════════ -->
+<div class="trust">
+  <div class="wrap">
+    <div class="trust-inner">
+      <div class="trust-item">
+        <div class="trust-num f-mono" style="font-size:clamp(14px,2vw,20px);line-height:1.4">農村好店<br>計畫</div>
+        <div class="trust-lbl">合作攝影師</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num">2018</div>
+        <div class="trust-lbl">攝影資歷 Since</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-num f-mono" style="font-size:clamp(14px,2vw,20px);line-height:1.4">空間 · 品牌<br>活動</div>
+        <div class="trust-lbl">承接類型</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ WORK INDEX ══════════ -->
+<section id="works">
+  <div class="wrap">
+    <div class="work-header">
+      <div>
+        <p class="section-num">01 — WORKS</p>
+        <h2 class="section-title" style="margin-top:6px">作品索引</h2>
+      </div>
+      <div class="filter-row" role="group" aria-label="分類篩選">
+        <button class="filter-btn active" data-cat="all">ALL</button>
+        <button class="filter-btn" data-cat="空間影像">空間影像</button>
+        <button class="filter-btn" data-cat="品牌行銷">品牌行銷</button>
+        <button class="filter-btn" data-cat="斜槓接案">斜槓接案</button>
+      </div>
+    </div>
+
+    <div class="work-grid" id="work-grid">
+
+      <!-- NO.01 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.01</div>
+          <div>
+            <div class="work-name">蜜工坊</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">台灣農村蜂蜜品牌，採蜜流程、商品靜物與生活場域三個面向完整記錄。</p>
+          <div class="gallery-strip">
+            <img src="蜜工坊/DSCF6106-2.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+            <img src="蜜工坊/DSCF6005.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+            <img src="蜜工坊/DSCF6126.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+            <img src="蜜工坊/DSCF5874.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+            <img src="蜜工坊/DSCF6060.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+            <img src="蜜工坊/DSCF6074.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+            <img src="蜜工坊/DSCF6094.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+            <img src="蜜工坊/DSCF6141.jpg" loading="lazy" alt="蜜工坊" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.02 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.02</div>
+          <div>
+            <div class="work-name">鄒築園</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">農園手作品牌，依品項分組拍攝商品圖與情境圖，供社群與電商平台使用。</p>
+          <div class="gallery-strip">
+            <img src="鄒築園/DSCF4554-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4576.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4497-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4463.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4511.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4513.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4520.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4549.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4559.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4581-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4594.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4623-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4624-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4629.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4668-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4675-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4701-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+            <img src="鄒築園/DSCF4703-2.jpg" loading="lazy" alt="鄒築園" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.03 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.03</div>
+          <div>
+            <div class="work-name">正福茶園</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">茶葉品牌，分乾燥茶葉、沖泡過程與茶湯三組，完整呈現品牌產品系列。</p>
+          <div class="gallery-strip">
+            <img src="正福茶園/DSCF5573.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+            <img src="正福茶園/DSCF5577.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+            <img src="正福茶園/DSCF5624.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+            <img src="正福茶園/DSCF5628.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+            <img src="正福茶園/DSCF5765.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+            <img src="正福茶園/DSCF5782.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+            <img src="正福茶園/DSCF5823.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+            <img src="正福茶園/DSCF5826.jpg" loading="lazy" alt="正福茶園" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.04 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.04</div>
+          <div>
+            <div class="work-name">天然茶莊</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">自然農法茶品牌，以環境光拍攝葉面紋理與製程，呈現品牌的健康定位。</p>
+          <div class="gallery-strip">
+            <img src="天然茶莊/DSCF6205.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+            <img src="天然茶莊/DSCF6263.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+            <img src="天然茶莊/DSCF6395.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+            <img src="天然茶莊/DSCF6482.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+            <img src="天然茶莊/DSCF6166.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+            <img src="天然茶莊/DSCF6169.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+            <img src="天然茶莊/DSCF6298.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+            <img src="天然茶莊/DSCF6504.jpg" loading="lazy" alt="天然茶莊" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.05 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.05</div>
+          <div>
+            <div class="work-name">李記烏魚子</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">傳統海產加工品牌，商品靜物組搭配原木底材，細節質感清晰呈現。</p>
+          <div class="gallery-strip">
+            <img src="李記烏魚子/DSCF4716.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4780.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4854.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4865.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4866.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4821.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4831.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4714.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4717.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4756.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4759.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4766.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4800.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4801.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4803.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+            <img src="李記烏魚子/DSCF4841.jpg" loading="lazy" alt="李記烏魚子" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.06 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.06</div>
+          <div>
+            <div class="work-name">金喜檸檬</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">農場品牌影像，清晨採果場景與商品雙組，白底版與環境版分別交付。</p>
+          <div class="gallery-strip">
+            <img src="金喜檸檬/DSCF5476-3.jpg" loading="lazy" alt="金喜檸檬" class="gallery-img">
+            <img src="金喜檸檬/DSCF5386.jpg" loading="lazy" alt="金喜檸檬" class="gallery-img">
+            <img src="金喜檸檬/DSCF5402.jpg" loading="lazy" alt="金喜檸檬" class="gallery-img">
+            <img src="金喜檸檬/DSCF5454.jpg" loading="lazy" alt="金喜檸檬" class="gallery-img">
+            <img src="金喜檸檬/DSCF5460.png" loading="lazy" alt="金喜檸檬" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.07 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.07</div>
+          <div>
+            <div class="work-name">赤科天心</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 花蓮玉里 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">花蓮赤科山農作品牌，清晨與午後兩段進場，記錄農業場域與品牌商品。</p>
+          <div class="gallery-strip">
+            <img src="赤科天心/DSCF5165.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5263.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5188.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5199.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5148.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5150.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5346.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5350.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+            <img src="赤科天心/DSCF5352.jpg" loading="lazy" alt="赤科天心" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.08 -->
+      <div class="work-card" data-type="品牌行銷">
+        <div class="work-card-head">
+          <div class="work-no">NO.08</div>
+          <div>
+            <div class="work-name">華揚茗茶</div>
+            <div class="work-meta-row">TYPE: 品牌行銷 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">品牌行銷</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-farm"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">精品茶葉品牌，以茶器、茶色與沖泡三組並行，適合多平台靈活使用。</p>
+          <div class="gallery-strip">
+            <img src="華揚茗茶/DSCF4909.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+            <img src="華揚茗茶/DSCF4914.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+            <img src="華揚茗茶/DSCF4966.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+            <img src="華揚茗茶/DSCF4976.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+            <img src="華揚茗茶/DSCF4977.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+            <img src="華揚茗茶/DSCF4997.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+            <img src="華揚茗茶/DSCF4918.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+            <img src="華揚茗茶/DSCF4936.jpg" loading="lazy" alt="華揚茗茶" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.09 -->
+      <div class="work-card" data-type="空間影像">
+        <div class="work-card-head">
+          <div class="work-no">NO.09</div>
+          <div>
+            <div class="work-name">大巨蛋 BabyGAP 商業空間拍攝</div>
+            <div class="work-meta-row">TYPE: 空間影像 · LOC: 台北大巨蛋 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">空間影像</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-space"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">台北大巨蛋童裝門市開幕前空間記錄，兼顧品牌色系與陳列動線。</p>
+          <div class="gallery-strip">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7683.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7692.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7697.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7705.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7707.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7708.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7710.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7711.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7721.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7724.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7730-1.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7736.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7738.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7748.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+            <img src="大巨蛋BabyGAP商業空間拍攝/DSCF7749.jpg" loading="lazy" alt="大巨蛋BabyGAP" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.10 -->
+      <div class="work-card" data-type="空間影像">
+        <div class="work-card-head">
+          <div class="work-no">NO.10</div>
+          <div>
+            <div class="work-name">Bonbons</div>
+            <div class="work-meta-row">TYPE: 空間影像 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">空間影像</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-dining"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">甜點品牌商品與空間並行記錄，以窗邊自然光呈現甜點的色彩與光澤。</p>
+          <div class="gallery-strip">
+            <img src="Bonbons/DSCF3728.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3742.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3842.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3883.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3732.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3735.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3739.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3741.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3764.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3769.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3772.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3784.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3785.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3787.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3788.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3792.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3800.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3807.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3812.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3818.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3822.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3826.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3832.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3861.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3864.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3865.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3867.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3870.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3874.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3875.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3885.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3899.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+            <img src="Bonbons/DSCF3905.jpg" loading="lazy" alt="Bonbons" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.11 -->
+      <div class="work-card" data-type="斜槓接案">
+        <div class="work-card-head">
+          <div class="work-no">NO.11</div>
+          <div>
+            <div class="work-name">打開台北講座</div>
+            <div class="work-meta-row">TYPE: 斜槓接案 · LOC: 台北 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">斜槓接案</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-event"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">城市建築公開講座現場紀錄，含講者特寫、聽眾互動與場地形象。</p>
+          <div class="gallery-strip">
+            <img src="打開台北講座/482049357_1206703367684105_5370348541841341929_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482052731_1206703364350772_5992401599880229098_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482068477_1206703457684096_8304217356565063096_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482134563_1206703954350713_1446728415903981922_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482192556_1206704057684036_4612020211864338950_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482208110_1206703951017380_3523629076379705079_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482211327_1206704154350693_8054244057468883591_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482214151_1206703964350712_404100882470381337_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482219849_1206704161017359_1344599350591606267_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482220048_1206703504350758_3049245839950026693_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482228149_1206704011017374_97644845940894953_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482354830_1206703144350794_7451865930591766987_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482959177_1206703957684046_2626820104571415893_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482959357_1206703491017426_4467006191697779498_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482962278_1206704064350702_165473656688118153_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482981013_1206703947684047_5509243270269157033_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482987039_1206703307684111_4575521074319871261_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+            <img src="打開台北講座/482987652_1206703997684042_8186362740860802823_n.jpg" loading="lazy" alt="打開台北講座" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.12 -->
+      <div class="work-card" data-type="斜槓接案">
+        <div class="work-card-head">
+          <div class="work-no">NO.12</div>
+          <div>
+            <div class="work-name">扶輪社生物多樣性講座</div>
+            <div class="work-meta-row">TYPE: 斜槓接案 · LOC: 台灣 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">斜槓接案</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-event"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">專業社群講座紀錄，兼顧主講人神態與簡報畫面的清晰可讀性。</p>
+          <div class="gallery-strip">
+            <img src="扶輪社生物多樣性講座/DSCF7067-2.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/DSCF7080-2.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/DSCF7107-2.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/DSCF7122-2.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/DSCF7129-2.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_1.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_2.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_3.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_4.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_5.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_6.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_7.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_8.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_9.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_10.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_11.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_12.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_14.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_15.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+            <img src="扶輪社生物多樣性講座/LINE_ALBUM_2026527_260612_17.jpg" loading="lazy" alt="扶輪社講座" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+      <!-- NO.13 -->
+      <div class="work-card" data-type="斜槓接案">
+        <div class="work-card-head">
+          <div class="work-no">NO.13</div>
+          <div>
+            <div class="work-name">桃園社造活動商品照</div>
+            <div class="work-meta-row">TYPE: 斜槓接案 · LOC: 桃園 · YEAR: 2026</div>
+          </div>
+          <div class="work-icon-wrap">
+            <span class="work-type-tag">斜槓接案</span>
+            <svg class="work-svg" aria-hidden="true"><use href="#ic-event"/></svg>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+          </div>
+        </div>
+        <div class="work-detail">
+          <p class="work-desc">移動式展覽攤位，活動現場與商品靜物分組拍攝，統一視覺形象。</p>
+          <div class="gallery-strip">
+            <img src="桃園社造活動商品照/DSCF3916.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3959.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3912.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3913.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3922.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3926.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3928.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3961.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3966%20(1).jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+            <img src="桃園社造活動商品照/DSCF3968.jpg" loading="lazy" alt="桃園社造" class="gallery-img">
+          </div>
+          <a class="work-drive-link" href="https://drive.google.com/drive/folders/175IDrZ1bQQSY_ADjHqSzib8FO3r62739?usp=drive_link" target="_blank" rel="noopener"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9 9 1M9 1H4M9 1v5"/></svg>PHOTOS</a>
+        </div>
+      </div>
+
+    </div><!-- /work-grid -->
+  </div>
+</section>
+
+<!-- ══════════ PROCESS ══════════ -->
+<section id="process">
+  <div class="wrap">
+    <p class="section-num">03 — PROCESS</p>
+    <h2 class="section-title" style="margin-top:6px">現場怎麼拍</h2>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div class="step-title">進場前先讀空間</div>
+        <p class="step-desc">走一圈確認採光方向、動線與招牌材質，排出當天取景順序。不在現場即興決定，有節奏才有效率。</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-title">引導店主入鏡</div>
+        <p class="step-desc">給具體動作指令：手放哪、眼睛看哪、重複哪個步驟。不說「自然一點」，讓對方在工作狀態裡被拍下來。</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-title">隨車、隨節奏走</div>
+        <p class="step-desc">當天隨車移動、跟著活動流程走，不打斷現場運作。拍攝是融入，不是佔據。</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div class="step-title">雲端選片與交件</div>
+        <p class="step-desc">拍攝結束提供雲端相簿供客戶挑選，活動後一個月內交付精選照片，兩種解析度分包。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SERVICES ══════════ -->
+<section id="services">
+  <div class="wrap">
+    <p class="section-num">04 — SERVICES</p>
+    <h2 class="section-title" style="margin-top:6px">服務項目</h2>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-head">
+          <div class="service-name">商業空間攝影</div>
+          <div class="service-price">洽詢報價</div>
+        </div>
+        <p class="service-desc">門市、選品店、工作室等空間的完整影像記錄。進場前先了解空間動線與品牌定位，從結構到細節系統拍攝。</p>
+        <div class="service-includes">
+          <div class="service-item">進場前現場評估與取景規劃</div>
+          <div class="service-item">空間環境組 + 細節特寫組</div>
+          <div class="service-item">可安排人物入鏡</div>
+          <div class="service-item">網路版 + 印刷版雙規格交付</div>
+          <div class="service-item">含 Instagram 直式裁切版</div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-head">
+          <div class="service-name">活動現場紀錄</div>
+          <div class="service-price">洽詢報價</div>
+        </div>
+        <p class="service-desc">開幕、市集、品牌活動的全程跟拍。隨活動流程移動，不影響現場節奏，同時兼顧環境與人物互動。</p>
+        <div class="service-includes">
+          <div class="service-item">全程跟拍不中斷現場</div>
+          <div class="service-item">環境紀錄 + 人物互動分包</div>
+          <div class="service-item">雲端相簿供客戶挑選</div>
+          <div class="service-item">活動後一個月內交件</div>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-head">
+          <div class="service-name">行銷企劃與腳本</div>
+          <div class="service-price">洽詢報價</div>
+        </div>
+        <p class="service-desc">以設計師角度思考視覺傳播，撰寫行銷文案與拍攝腳本。適合需要影像策略規劃的品牌。</p>
+        <div class="service-includes">
+          <div class="service-item">品牌視覺方向建議</div>
+          <div class="service-item">行銷文案與社群文字</div>
+          <div class="service-item">拍攝腳本與分鏡</div>
+          <div class="service-item">可結合拍攝案一併執行</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ COLLABORATION FLOW ══════════ -->
+<section id="flow">
+  <div class="wrap">
+    <p class="section-num">05 — WORKFLOW</p>
+    <h2 class="section-title" style="margin-top:6px">合作流程</h2>
+    <div class="flow-steps" aria-label="合作步驟流程">
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-label">01<br>詢問</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-label">02<br>需求確認<br>與報價</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-label">03<br>拍攝前<br>溝通</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-label">04<br>拍攝<br>當天</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-label">05<br>雲端<br>選片</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-label">06<br>一個月內<br>交件</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRE-SHOOT CHECKLIST ══════════ -->
+<section id="checklist">
+  <div class="wrap">
+    <p class="section-num">06 — PREP</p>
+    <h2 class="section-title" style="margin-top:6px">拍攝前準備</h2>
+    <p class="body-tc" style="margin-top:10px">給客戶的清單，拍攝當天進場前確認。</p>
+    <div class="checklist">
+      <div class="checklist-item">
+        <div class="check-mark">—</div>
+        <div class="check-text"><strong>整理環境</strong>拍攝前 30 分鐘先清理桌面、工作台與展示架，移除與品牌調性不符的雜物。</div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-mark">—</div>
+        <div class="check-text"><strong>準備代表性道具</strong>品牌器具、食材、手工材料或特色商品，提前擺放好，不要臨時找。</div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-mark">—</div>
+        <div class="check-text"><strong>衣著準備</strong>需要入鏡時，建議穿著貼近品牌調性、不過於搶眼的服裝，以素色或簡單花紋為主。</div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-mark">—</div>
+        <div class="check-text"><strong>告知到達資訊</strong>停車位置、門號、電梯方向。進場時間通常比開店早 30 分鐘，請提前確認可否進入。</div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-mark">—</div>
+        <div class="check-text"><strong>預留完整檔期</strong>空間攝影通常需要 2–3 小時，活動紀錄依全程長度而定，請保留緩衝時間。</div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-mark">—</div>
+        <div class="check-text"><strong>告知特別需求</strong>如果有指定要拍的角落、商品或特別在意的細節，提前用文字或圖片告知，進場後直接執行。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FAQ ══════════ -->
+<section id="faq">
+  <div class="wrap">
+    <p class="section-num">08 — FAQ</p>
+    <h2 class="section-title" style="margin-top:6px">常見問題</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">可以安排外縣市出班嗎？</button>
+        <div class="faq-a">可以。平日夜間與週末假日都可安排，外縣市出班另計交通費用，遠距案件建議在報價階段一起確認。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">不確定自己需要多少張照片，怎麼決定？</button>
+        <div class="faq-a">告訴我照片的用途（IG 發文、官網、印刷品、菜單更新等），我會根據使用場景建議張數與規格，再一起確認。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">拍攝授權範圍包含哪些用途？</button>
+        <div class="faq-a">標準授權包含客戶自有社群帳號、官方網站與店內文宣使用。如需用於廣告代理投放或商業授權轉售，請在報價前說明，另議授權費用。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">如果對照片不滿意怎麼辦？</button>
+        <div class="faq-a">交付前會先提供縮圖選片，客戶挑選後進行精修。如對整體方向有疑慮，請在合作前溝通清楚預期成果，通常進場前的確認是避免落差最有效的方式。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">如何開始預約合作？</button>
+        <div class="faq-a">用以下任一方式聯繫我：告知拍攝日期（或日期範圍）、地點、拍攝類型與大致用途。我會在 48 小時內回覆，並安排線上或電話確認需求。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
+<!-- ══════════ PERSONAL INTRO ══════════ -->
+<section id="person" style="background:var(--bg2);">
+  <div class="wrap">
+    <p class="section-num">09 — PROFILE</p>
+    <h2 class="section-title" style="margin-top:6px">韋林彣 · Joyce</h2>
+    <p class="label" style="margin-top:8px;letter-spacing:.18em">建築設計師 &nbsp;|&nbsp; 室內設計師 &nbsp;|&nbsp; 攝影師</p>
+
+    <div class="about-inner" style="margin-top:36px;align-items:start">
+      <!-- Left: Bio -->
+      <div>
+        <p class="about-bio" style="border-left:2px solid var(--accent);padding-left:16px;font-style:italic;color:var(--text2);margin-bottom:24px;">
+          「不要效法這個世界，只要心意更新而變化，<br>不斷重新、重組定義事物的價值。」
+        </p>
+        <p class="about-bio">
+          畢業於淡江大學建築學系，現任 B-STUDIO 居沃空間設計/陳秉信建築師事務所股份有限公司室內部專案設計師。曾任職於十禾建築師事務所、Q-LAB 陳品亘建築師事務所，熟悉從概念發想、建模渲染、施工圖繪製到工地監工的完整設計流程。<br><br>
+          同時以 wenwind 彣風製所承接商業空間攝影與活動現場紀錄，攝影資歷自 2018 年起持續至今。設計背景讓我進場前就能讀懂動線、材質與光線走向，知道要站在哪裡、等哪一刻。
+        </p>
+
+        <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">AutoCAD</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">Rhino 8</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">SketchUp</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">Grasshopper</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">Enscape</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">D5 Render</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">Lumion</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">Lightroom</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">Photoshop</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;padding:4px 10px;border:1px solid var(--line2);color:var(--text3)">Premiere</span>
+        </div>
+      </div>
+
+      <!-- Right: Experience -->
+      <div>
+        <p class="label" style="margin-bottom:10px;color:var(--text3)">EXPERIENCE</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-size:13px;font-family:'IBM Plex Mono',monospace;color:var(--text2)">淡江大學建築學系</div>
+          <div style="font-size:13px;font-family:'IBM Plex Mono',monospace;color:var(--text2)">B-STUDIO 居沃空間設計/陳秉信建築師事務所</div>
+          <div style="font-size:13px;font-family:'IBM Plex Mono',monospace;color:var(--text2)">Q-LAB 陳品亘建築師事務所</div>
+          <div style="font-size:13px;font-family:'IBM Plex Mono',monospace;color:var(--text2)">十禾建築師事務所</div>
+          <div style="font-size:13px;font-family:'IBM Plex Mono',monospace;color:var(--text2)">wenwind 彣風製所 · 攝影 since 2018</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ABOUT STUDIO ══════════ -->
+<section id="about">
+  <div class="wrap">
+    <p class="section-num">10 — ABOUT STUDIO</p>
+    <h2 class="section-title" style="margin-top:6px">關於 wenwind 彣風製所</h2>
+    <div class="about-inner" style="margin-top:32px;">
+      <div>
+        <div class="about-pillars">
+          <div class="about-pillar">
+            <div class="pillar-zh" style="color:var(--blue)">隨時改變</div>
+            <div class="pillar-desc">方向可以調整，沒有什麼是非得那樣不可。</div>
+          </div>
+          <div class="about-pillar">
+            <div class="pillar-zh" style="color:var(--green)">隨時收拾好</div>
+            <div class="pillar-desc">每一個案子都做好收尾，才有力氣出發。</div>
+          </div>
+          <div class="about-pillar">
+            <div class="pillar-zh" style="color:var(--red)">隨時出發</div>
+            <div class="pillar-desc">準備好了就走，不等到「完美」的時機。</div>
+          </div>
+        </div>
+        <p class="about-bio">
+          主業在設計公司擔任專案設計師，下班後和假日以 wenwind 彣風製所承接商業空間攝影與活動紀錄。有設計背景，進場前讀得懂動線、材質與光線走向。不是站在那邊等畫面，而是先想好要站在哪裡、等哪一刻。<br><br>
+          與建築帳號 JC_architecture 共同運作，長期記錄台灣空間與城市景觀。
+        </p>
+        <table class="about-table">
+          <tr><td>Studio</td><td>wenwind 彣風製所</td></tr>
+          <tr><td>Est.</td><td>2025</td></tr>
+          <tr><td>Specialty</td><td>空間攝影 · 品牌行銷 · 空間設計</td></tr>
+          <tr><td>Collab</td><td>JC_architecture｜建築｜城市探索</td></tr>
+          <tr><td>Schedule</td><td>平日夜間 · 週末假日 · 可外縣市</td></tr>
+        </table>
+      </div>
+      <div class="about-photo" style="display:flex;flex-direction:column;justify-content:flex-end;">
+        <div style="width:60%;aspect-ratio:1/1;overflow:hidden;">
+          <img src="profile.jpg" alt="韋林彣 Joyce" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section id="contact">
+  <div class="wrap">
+    <p class="section-num">11 — CONTACT</p>
+    <h2 class="section-title" style="margin-top:6px">預約拍攝</h2>
+    <p class="body-tc" style="margin-top:10px">四種方式都可以，說明拍攝日期、地點與類型，48 小時內回覆。</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-method">Phone</div>
+        <div class="contact-val" id="c-phone">0906-955-455</div>
+        <button class="copy-btn" data-copy="c-phone" aria-label="複製手機號碼">COPY</button>
+      </div>
+      <div class="contact-card">
+        <div class="contact-method">Email</div>
+        <div class="contact-val" id="c-email">joyce61218@gmail.com</div>
+        <button class="copy-btn" data-copy="c-email" aria-label="複製 Email">COPY</button>
+      </div>
+      <div class="contact-card">
+        <div class="contact-method">Instagram</div>
+        <div class="contact-val" id="c-ig">@boring.girl.notboring</div>
+        <button class="copy-btn" data-copy="c-ig" aria-label="複製 Instagram">COPY</button>
+      </div>
+      <div class="contact-card">
+        <div class="contact-method">Facebook</div>
+        <div class="contact-val" id="c-fb">韋林彣</div>
+        <button class="copy-btn" data-copy="c-fb" aria-label="複製 Facebook">COPY</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="footer-ww">wen<span class="green">w</span>ind</span>
+        <span class="dot-red" aria-hidden="true"></span>
+      </div>
+      <span class="footer-tagline">Freedom, Design</span>
+      <span class="footer-since">彣風製所 · Since 2025</span>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /.light-zone -->
+
+<script>
+/* ── Sphere scroll animation ── */
+(function () {
+  const TOTAL = 240;
+  const DIR   = 'frames/';
+  const SRCS  = Array.from({length: TOTAL}, (_, i) =>
+    DIR + 'frame_' + String(i+1).padStart(4,'0') + '.jpg'
+  );
+
+  const cache = new Array(TOTAL);
+  let loaded  = 0;
+  let shown   = false;
+
+  const loader  = document.getElementById('loader');
+  const ldrFill = document.getElementById('ldr-fill');
+  const ldrPct  = document.getElementById('ldr-pct');
+
+  SRCS.forEach((src, i) => {
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      if (img.naturalWidth) cache[i] = img;
+      loaded++;
+      const p = Math.floor(loaded / TOTAL * 100);
+      ldrFill.style.width = p + '%';
+      ldrPct.textContent  = p + '%';
+      if (!shown && loaded >= 30) { shown = true; setTimeout(() => loader.classList.add('out'), 300); }
+    };
+    img.src = src;
+  });
+  setTimeout(() => { if (!shown) { shown = true; loader.classList.add('out'); } }, 6000);
+
+  const pbar     = document.getElementById('pbar');
+  const frameImg = document.getElementById('frame-img');
+  const hint     = document.getElementById('hint');
+  const panel    = document.getElementById('panel');
+  const gvFrame  = document.getElementById('gv-frame');
+  const gvPct    = document.getElementById('gv-pct');
+  const gvSec    = document.getElementById('gv-sec');
+  const tIntro   = document.getElementById('t-intro');
+  const f1       = document.getElementById('f1');
+  const f2       = document.getElementById('f2');
+  const f3       = document.getElementById('f3');
+  const gc1      = document.getElementById('gc1');
+  const gc2      = document.getElementById('gc2');
+  const gc3      = document.getElementById('gc3');
+  const nav      = document.getElementById('main-nav');
+  const sceneH   = document.getElementById('scene-wrap').scrollHeight;
+
+  let curFrame = 0;
+  let raf = false;
+
+  function show(el, on) { el.classList.toggle('on', on); }
+
+  function tick() {
+    raf = false;
+    const maxScroll = sceneH - window.innerHeight;
+    const p = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+
+    pbar.style.width = (p * 100).toFixed(2) + '%';
+
+    const target = Math.min(Math.floor(p * (TOTAL-1)) + 1, TOTAL);
+    if (target !== curFrame) {
+      curFrame = target;
+      const idx = target - 1;
+      const c = cache[idx];
+      frameImg.src = (c && c.complete && c.naturalWidth) ? c.src : SRCS[idx];
+      gvFrame.textContent = String(target).padStart(3,'0') + ' / 240';
+    }
+
+    gvPct.textContent  = Math.round(p * 100) + '%';
+    hint.style.opacity = p < 0.06 ? 1 : 0;
+
+    show(tIntro, p < 0.18);
+    show(panel,  p >= 0.12 && p < 0.92);
+    show(f1,     p >= 0.18 && p < 0.44);
+    show(f2,     p >= 0.44 && p < 0.70);
+    show(f3,     p >= 0.70 && p < 0.90);
+
+    gc1.classList.toggle('hi', p >= 0.18 && p < 0.44);
+    gc2.classList.toggle('hi', p >= 0.44 && p < 0.70);
+    gc3.classList.toggle('hi', p >= 0.70 && p < 0.90);
+
+    gvSec.textContent =
+      p < 0.18 ? 'Intro'  :
+      p < 0.44 ? 'Design' :
+      p < 0.70 ? 'Works'  :
+      p < 0.90 ? 'Collab' : 'End';
+
+    const pastScene = window.scrollY > sceneH - window.innerHeight + 60;
+    nav.classList.toggle('light', pastScene);
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!raf) { raf = true; requestAnimationFrame(tick); }
+  }, { passive: true });
+
+  tick();
+})();
+
+(function () {
+  'use strict';
+
+  /* ── Work filter ── */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const workCards  = document.querySelectorAll('.work-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      workCards.forEach(card => {
+        card.hidden = (cat !== 'all' && card.dataset.type !== cat);
+      });
+    });
+  });
+
+  /* ── Work card expand/collapse ── */
+  workCards.forEach(card => {
+    const head = card.querySelector('.work-card-head');
+    head.addEventListener('click', () => {
+      const isOpen = card.classList.toggle('open');
+      head.querySelector('.chevron').setAttribute('aria-expanded', isOpen);
+    });
+    head.setAttribute('role', 'button');
+    head.setAttribute('tabindex', '0');
+    head.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); head.click(); }
+    });
+  });
+
+  /* ── FAQ accordion ── */
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const isOpen = item.classList.toggle('open');
+      q.setAttribute('aria-expanded', isOpen);
+    });
+  });
+
+  /* ── Copy to clipboard ── */
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id  = btn.dataset.copy;
+      const val = document.getElementById(id)?.textContent?.trim() || '';
+      if (!val) return;
+
+      const restore = () => {
+        btn.textContent = 'COPY';
+        btn.classList.remove('copied');
+      };
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(val)
+          .then(() => {
+            btn.textContent = 'COPIED';
+            btn.classList.add('copied');
+            setTimeout(restore, 2000);
+          })
+          .catch(() => fallback(val));
+      } else {
+        fallback(val);
+      }
+
+      function fallback(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          btn.textContent = 'COPIED';
+          btn.classList.add('copied');
+          setTimeout(restore, 2000);
+        } catch(e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  /* ── Lazy image loading (for future real images) ── */
+  if ('IntersectionObserver' in window) {
+    const imgObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const img = e.target;
+          if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
+          obs.unobserve(img);
+        }
+      });
+    }, { rootMargin: '200px' });
+    document.querySelectorAll('img[data-src]').forEach(img => imgObs.observe(img));
+  }
+
+})();
+
+  /* ── Gallery lightbox ── */
+  (function(){
+    let lbImgs = [], lbIdx = 0;
+    const lb     = document.getElementById('lightbox');
+    const lbImg  = document.getElementById('lb-img');
+    const lbCnt  = document.getElementById('lb-counter');
+
+    document.addEventListener('click', function(e){
+      const img = e.target.closest('.gallery-img');
+      if (!img) return;
+      e.stopPropagation();
+      const strip = img.closest('.gallery-strip');
+      lbImgs = Array.from(strip.querySelectorAll('.gallery-img'));
+      openLb(lbImgs.indexOf(img));
+    });
+
+    function openLb(idx){
+      lbIdx = (idx + lbImgs.length) % lbImgs.length;
+      lbImg.src = lbImgs[lbIdx].src;
+      lbCnt.textContent = (lbIdx + 1) + ' / ' + lbImgs.length;
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLb(){ lb.hidden = true; document.body.style.overflow = ''; }
+
+    document.getElementById('lb-close').addEventListener('click', closeLb);
+    lb.addEventListener('click', closeLb);
+    lbImg.addEventListener('click', function(e){ e.stopPropagation(); });
+
+    document.getElementById('lb-prev').addEventListener('click', function(e){
+      e.stopPropagation(); openLb(lbIdx - 1);
+    });
+    document.getElementById('lb-next').addEventListener('click', function(e){
+      e.stopPropagation(); openLb(lbIdx + 1);
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (lb.hidden) return;
+      if (e.key === 'ArrowLeft')  openLb(lbIdx - 1);
+      if (e.key === 'ArrowRight') openLb(lbIdx + 1);
+      if (e.key === 'Escape')     closeLb();
+    });
+  })();
+
+</script>
+
+<!-- Lightbox -->
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="相片預覽">
+  <img id="lb-img" src="" alt="">
+  <button id="lb-close" aria-label="關閉">✕</button>
+  <button id="lb-prev" aria-label="上一張">&#8249;</button>
+  <button id="lb-next" aria-label="下一張">&#8250;</button>
+  <div id="lb-counter"></div>
+</div>
+
+</body>
+</html>

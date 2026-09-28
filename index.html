@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>wenwind 彣風製所 — 商業空間攝影</title>
+<meta name="description" content="wenwind 彣風製所。有設計背景的攝影師，專注商業空間攝影與活動現場紀錄。進場前讀得懂動線、材質與光線走向。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Noto+Sans+TC:wght@200;300;400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ──────────────────────────────────────── */
+:root {
+  --blue:   #004AAD;
+  --brown:  #53311B;
+  --red:    #BC0000;
+  --green:  #00753D;
+  --cream:  #EFEDE7;
+  --bg:     #EFEDE7;
+  --bg2:    #E6E2D9;
+  --text:   #1A1A1A;
+  --text2:  #53311B;
+  --text3:  #888070;
+  --line:   rgba(0,74,173,.14);
+  --line2:  rgba(0,74,173,.38);
+  /* dark section tokens */
+  --dk:     #050812;
+  --dk-g1:  #1B44C8;
+  --dk-g2:  #6B28B5;
+  --dk-g3:  #C42828;
+  --dk-txt: #E8EBF8;
+  --dk-dim: rgba(232,235,248,.5);
+  --dk-gl:  rgba(255,255,255,.07);
+  --dk-glb: rgba(255,255,255,.11);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--dk);
+  color: var(--dk-txt);
+  font-family: 'Noto Sans TC', system-ui, sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
+
+/* ── LOADER ──────────────────────────────────────── */
+#loader {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--dk);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 20px;
+  transition: opacity .7s, visibility .7s;
+}
+#loader.out { opacity: 0; visibility: hidden; pointer-events: none; }
+#ldr-pct {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(52px,9vw,90px);
+  font-weight: 700; letter-spacing: -.02em;
+  color: var(--dk-txt);
+  font-variant-numeric: tabular-nums;
+}
+.ldr-track {
+  width: 200px; height: 1px;
+  background: rgba(255,255,255,.1); position: relative;
+}
+#ldr-fill {
+  position: absolute; inset-block: 0; left: 0; width: 0;
+  background: linear-gradient(to right, var(--dk-g1), var(--dk-g2));
+  transition: width .2s ease;
+}
+.ldr-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .28em;
+  color: var(--dk-dim);
+}
+
+/* ── PROGRESS BAR ────────────────────────────────── */
+#pbar {
+  position: fixed; top: 0; left: 0; z-index: 300;
+  height: 2px; width: 0;
+  background: linear-gradient(to right, var(--dk-g1), var(--dk-g2) 55%, var(--dk-g3));
+  pointer-events: none;
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px; padding: 0 clamp(20px,5vw,72px);
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  background: rgba(5,8,18,.60);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: background .5s, border-color .5s;
+}
+nav.light {
+  background: rgba(239,237,231,.80);
+  border-bottom-color: var(--line);
+}
+nav.light .nav-brand,
+nav.light .nav-links a { color: var(--text); }
+nav.light .nav-links a { color: var(--text3); }
+nav.light .nav-links a:hover { color: var(--text); }
+nav.light .nav-cta { background: var(--blue); }
+
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .08em; color: var(--dk-txt);
+  transition: color .5s;
+}
+.nav-brand .green { color: var(--green); }
+.nav-links { list-style: none; display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .18em;
+  color: var(--dk-dim); transition: color .2s;
+}
+.nav-links a:hover { color: var(--dk-txt); }
+.nav-cta {
+  padding: 8px 22px;
+  background: var(--dk-g1); color: #fff !important;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .16em;
+  transition: background .2s;
+}
+.nav-cta:hover { background: #2B5CE8; }
+
+/* ── SPHERE SCENE ────────────────────────────────── */
+#scene-wrap { position: relative; height: 600vh; }
+#sticky {
+  position: sticky; top: 0;
+  width: 100%; height: 100vh;
+  overflow: hidden; background: var(--dk);
+}
+
+/* Glows — after frame in DOM, screen blend → visible around sphere */
+.glow {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); pointer-events: none;
+  mix-blend-mode: screen;
+}
+#g-center {
+  width: 70vw; height: 70vh;
+  background: radial-gradient(circle, rgba(27,68,200,.42) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+#g-violet {
+  width: 45vw; height: 45vh;
+  background: radial-gradient(circle, rgba(107,40,181,.28) 0%, transparent 70%);
+  top: -8%; left: -4%;
+}
+#g-ember {
+  width: 38vw; height: 38vh;
+  background: radial-gradient(circle, rgba(196,40,40,.20) 0%, transparent 70%);
+  bottom: 4%; right: 4%;
+}
+
+/* Frame */
+#frame-wrap {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+#frame-img {
+  height: 100%; width: auto; max-width: 100%;
+  object-fit: contain; user-select: none; -webkit-user-drag: none;
+}
+
+/* Left text layers */
+.s-text {
+  position: absolute; pointer-events: none;
+  opacity: 0; transition: opacity .5s ease, transform .5s ease;
+  will-change: opacity, transform;
+}
+.s-text.on { opacity: 1; }
+
+#t-intro {
+  bottom: 13%; left: clamp(24px,6vw,90px);
+  transform: translateY(16px);
+}
+#t-intro.on { transform: translateY(0); }
+#t-intro .brand-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .28em;
+  color: var(--dk-dim); margin-bottom: 14px;
+}
+#t-intro h1 {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(48px,9vw,120px);
+  font-weight: 800; line-height: .95; letter-spacing: -.025em;
+  text-shadow: -3px 0 6px rgba(27,68,200,.7), 3px 0 6px rgba(196,40,40,.5);
+}
+#t-intro .tagline {
+  margin-top: 16px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: clamp(12px,1.4vw,16px); font-weight: 300;
+  color: var(--dk-dim); max-width: 360px; line-height: 1.7;
+}
+
+.feat-t {
+  left: clamp(24px,6vw,90px); top: 50%;
+  transform: translateY(calc(-50% + 18px));
+}
+.feat-t.on { transform: translateY(-50%); }
+.feat-t .fn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .26em;
+  color: var(--dk-dim); margin-bottom: 10px;
+}
+.feat-t h2 {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(32px,5vw,64px);
+  font-weight: 800; line-height: 1.05; letter-spacing: -.01em;
+}
+.feat-t .fd {
+  margin-top: 14px;
+  font-size: clamp(12px,1.2vw,14px); font-weight: 300;
+  color: var(--dk-dim); max-width: 300px; line-height: 1.85;
+}
+.feat-t .chips-dark {
+  display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px;
+}
+.chips-dark .chip-d {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .14em;
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 4px 12px; color: var(--dk-dim);
+}
+
+/* Right glass panel */
+#panel {
+  position: absolute;
+  right: clamp(20px,4vw,64px); top: 50%; transform: translateY(-50%);
+  width: clamp(170px,17vw,230px);
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0; pointer-events: none; transition: opacity .5s;
+}
+#panel.on { opacity: 1; pointer-events: auto; }
+.gc {
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  background: var(--dk-gl);
+  border: 1px solid var(--dk-glb); padding: 14px 16px;
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.gc:hover { background: rgba(255,255,255,.10); transform: translateX(-4px); }
+.gc.hi { background: rgba(27,68,200,.16); border-color: rgba(27,68,200,.42); }
+.gc .gl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .25em; color: var(--dk-dim); margin-bottom: 3px;
+}
+.gc .gv {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums;
+  color: var(--dk-txt);
+}
+.gc .gs { font-size: 11px; color: var(--dk-dim); margin-top: 2px; font-weight: 300; }
+
+/* Scroll hint */
+#hint {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  transition: opacity .4s;
+}
+#hint span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .32em; color: var(--dk-dim);
+}
+.arr-line {
+  width: 1px; height: 44px;
+  background: linear-gradient(to bottom, var(--dk-dim), transparent);
+  animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%,100% { opacity: .2; transform: scaleY(.5) translateY(-8px); }
+  55%      { opacity: 1;  transform: scaleY(1)  translateY(0);   }
+}
+
+/* ── BRIDGE: dark → cream ────────────────────────── */
+.bridge {
+  height: 120px;
+  background: linear-gradient(to bottom, var(--dk) 0%, var(--cream) 100%);
+}
+
+/* ── CREAM SECTIONS — shared wrap ────────────────── */
+.cream { background: var(--cream); color: var(--text); }
+.wrap  { max-width: 1200px; margin: 0 auto; padding-inline: clamp(20px,5vw,60px); }
+.section-pad { padding-block: clamp(60px,10vh,100px); }
+
+.section-num {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .22em; color: var(--blue);
+  display: block; margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(22px,3vw,32px);
+  font-weight: 800; color: var(--text); text-wrap: balance;
+  line-height: 1.1;
+}
+.section-sub {
+  font-size: 13px; font-weight: 300;
+  color: var(--text2); line-height: 1.85;
+  max-width: 52ch; margin-top: 10px;
+}
+
+/* ── PILLARS ─────────────────────────────────────── */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 40px;
+}
+.pillar-card {
+  background: var(--cream);
+  padding: clamp(24px,3vw,40px);
+  transition: background .2s;
+}
+.pillar-card:hover { background: var(--bg2); }
+.pillar-num {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(32px,4vw,52px); font-weight: 800;
+  color: var(--line2); line-height: 1;
+  font-variant-numeric: tabular-nums; margin-bottom: 20px;
+}
+.pillar-title {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 16px; font-weight: 400;
+  color: var(--blue); margin-bottom: 10px;
+}
+.pillar-desc {
+  font-size: 13px; font-weight: 300;
+  color: var(--text2); line-height: 1.85;
+}
+
+/* ── SELECTED WORKS ──────────────────────────────── */
+#works { background: var(--bg2); }
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 40px;
+}
+.work-card {
+  background: var(--cream);
+  padding: clamp(20px,2.5vw,32px);
+  display: flex; flex-direction: column;
+  transition: background .2s;
+  text-decoration: none; color: inherit;
+}
+#works .work-card { background: var(--bg2); }
+#works .work-card:hover { background: var(--cream); }
+.work-no {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .18em; color: var(--blue);
+  margin-bottom: 12px;
+}
+.work-type-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .14em;
+  color: var(--text3); margin-bottom: 8px;
+}
+.work-name {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: clamp(15px,1.8vw,19px);
+  font-weight: 400; color: var(--text);
+  margin-bottom: 6px; line-height: 1.3;
+}
+.work-loc {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .12em;
+  color: var(--text3); margin-bottom: 16px;
+}
+.work-desc {
+  font-size: 12px; font-weight: 300;
+  color: var(--text2); line-height: 1.85; flex: 1;
+  border-left: 1px solid var(--line2); padding-left: 12px;
+}
+.work-link-label {
+  margin-top: 20px; padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .16em; color: var(--blue);
+  display: flex; align-items: center; gap: 6px;
+}
+.works-all-btn {
+  display: inline-block; margin-top: 32px;
+  padding: 12px 32px;
+  background: var(--blue); color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .2em;
+  transition: background .2s;
+}
+.works-all-btn:hover { background: #0058d6; }
+
+/* ── ABOUT ───────────────────────────────────────── */
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px,6vw,80px);
+  margin-top: 40px;
+  align-items: start;
+}
+.about-quote {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: clamp(17px,2.2vw,22px); font-weight: 400;
+  color: var(--text); line-height: 1.65;
+  border-left: 3px solid var(--blue); padding-left: 20px;
+  margin-bottom: 28px;
+}
+.about-bio {
+  font-size: 13px; font-weight: 300;
+  color: var(--text2); line-height: 1.9;
+}
+.stat-row {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line); margin-top: 32px;
+}
+.stat-cell {
+  background: var(--cream); padding: 20px 18px;
+}
+.stat-n {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(28px,4vw,48px); font-weight: 800;
+  color: var(--blue); line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .18em;
+  color: var(--text3); margin-top: 6px;
+}
+.timeline {
+  margin-top: 28px;
+  border-collapse: collapse; width: 100%;
+}
+.timeline tr { border-bottom: 1px solid var(--line); }
+.timeline td {
+  padding: 10px 0; vertical-align: top;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .06em;
+}
+.timeline td:first-child { color: var(--text3); width: 120px; }
+.timeline td:last-child  { color: var(--text2); }
+.skills-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px;
+}
+.skill-chip {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .1em;
+  border: 1px solid var(--line2);
+  padding: 4px 11px; color: var(--blue);
+}
+
+/* ── CONTACT ─────────────────────────────────────── */
+#contact { background: var(--bg2); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 40px;
+}
+.contact-card {
+  background: var(--bg2);
+  padding: clamp(20px,3vw,36px);
+  display: flex; flex-direction: column; gap: 8px;
+  transition: background .2s;
+}
+.contact-card:hover { background: var(--cream); }
+.contact-method {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .2em;
+  color: var(--text3); margin-bottom: 4px;
+}
+.contact-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: clamp(12px,1.6vw,15px);
+  color: var(--text); word-break: break-all; line-height: 1.4;
+}
+.contact-desc {
+  font-size: 12px; font-weight: 300;
+  color: var(--text2); line-height: 1.7; margin-top: 4px;
+}
+.copy-btn {
+  margin-top: 10px; align-self: flex-start;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: .18em;
+  color: var(--blue); border: 1px solid var(--line2);
+  padding: 6px 12px; transition: all .2s;
+}
+.copy-btn:hover { background: var(--blue); color: var(--cream); border-color: var(--blue); }
+.copy-btn.copied { background: var(--green); color: var(--cream); border-color: var(--green); }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  background: var(--cream);
+  border-top: 1px solid var(--line);
+  padding-block: 32px;
+}
+.footer-inner {
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 16px;
+}
+.footer-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px; font-weight: 500; color: var(--text);
+}
+.footer-brand .green { color: var(--green); }
+.footer-tagline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .16em; color: var(--text3);
+}
+.footer-links {
+  display: flex; gap: 24px; list-style: none;
+}
+.footer-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .14em;
+  color: var(--text3); transition: color .2s;
+}
+.footer-links a:hover { color: var(--text); }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .works-grid    { grid-template-columns: 1fr 1fr; }
+  .pillars-grid  { grid-template-columns: 1fr; }
+  .about-inner   { grid-template-columns: 1fr; }
+  .contact-grid  { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .nav-links, #panel { display: none; }
+  .works-grid  { grid-template-columns: 1fr; }
+  .stat-row    { grid-template-columns: 1fr 1fr; }
+  #t-intro h1  { font-size: 52px; }
+  .feat-t h2   { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div id="ldr-pct">0%</div>
+  <div class="ldr-track"><div id="ldr-fill"></div></div>
+  <p class="ldr-label">Loading sequence</p>
+</div>
+
+<!-- Progress -->
+<div id="pbar"></div>
+
+<!-- Nav -->
+<nav id="main-nav">
+  <div class="nav-brand">wen<span class="green">w</span>ind<span style="color:rgba(255,255,255,.3);margin:0 8px">/</span>彣風製所</div>
+  <ul class="nav-links">
+    <li><a href="#works">作品集</a></li>
+    <li><a href="#about">關於</a></li>
+    <li><a href="#contact">聯絡</a></li>
+    <li><a class="nav-cta" href="portfolio.html">完整作品集 →</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ SPHERE SCROLL SCENE ══════════ -->
+<div id="scene-wrap">
+  <div id="sticky">
+
+    <div id="frame-wrap">
+      <img id="frame-img" src="frames/frame_0001.jpg" alt="sphere" draggable="false">
+    </div>
+
+    <!-- Glows on top of frame (screen blend) -->
+    <div class="glow" id="g-center"></div>
+    <div class="glow" id="g-violet"></div>
+    <div class="glow" id="g-ember"></div>
+
+    <!-- Intro text -->
+    <div class="s-text" id="t-intro">
+      <p class="brand-tag">WENWIND STUDIO · 彣風製所</p>
+      <h1>商業<br>攝影</h1>
+      <p class="tagline">有設計背景的攝影師，進場前讀得懂動線、材質與光線走向，知道要站在哪裡、等哪一刻。</p>
+    </div>
+
+    <!-- Section 1: Design background -->
+    <div class="s-text feat-t" id="f1">
+      <p class="fn">01 &nbsp;/&nbsp; Design Background</p>
+      <h2>設計師<br>的攝影眼</h2>
+      <p class="fd">建築系訓練 × 室內設計實務，讓每一次進場都能讀懂空間的動線、材質質地與光的走向。</p>
+      <div class="chips-dark">
+        <span class="chip-d">AutoCAD</span>
+        <span class="chip-d">Rhino 8</span>
+        <span class="chip-d">Enscape</span>
+        <span class="chip-d">Lightroom</span>
+      </div>
+    </div>
+
+    <!-- Section 2: Photography work -->
+    <div class="s-text feat-t" id="f2">
+      <p class="fn">02 &nbsp;/&nbsp; Commercial Photography</p>
+      <h2>13 個<br>真實案例</h2>
+      <p class="fd">農村品牌、商業空間、餐飲場域、活動現場——每張影像都有對應的設計思考與現場溫度。</p>
+      <div class="chips-dark">
+        <span class="chip-d">農村品牌</span>
+        <span class="chip-d">商業空間</span>
+        <span class="chip-d">餐飲空間</span>
+        <span class="chip-d">活動紀錄</span>
+      </div>
+    </div>
+
+    <!-- Section 3: Collaboration CTA -->
+    <div class="s-text feat-t" id="f3">
+      <p class="fn">03 &nbsp;/&nbsp; Let's Work Together</p>
+      <h2>開始<br>合作</h2>
+      <p class="fd">若您有商業攝影、品牌影像或設計合作的需求，歡迎直接聯絡。</p>
+      <div class="chips-dark" style="margin-top:24px">
+        <a class="chip-d" href="#contact" style="cursor:pointer;border-color:rgba(0,74,173,.6);color:#A8C4FF">查看聯絡方式 →</a>
+        <a class="chip-d" href="portfolio.html" style="cursor:pointer">完整作品集</a>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div id="panel">
+      <div class="gc" id="gc1">
+        <div class="gl">Frame</div>
+        <div class="gv" id="gv-frame">001 / 240</div>
+        <div class="gs">Scroll to animate</div>
+      </div>
+      <div class="gc" id="gc2">
+        <div class="gl">Progress</div>
+        <div class="gv" id="gv-pct">0%</div>
+        <div class="gs">Scene position</div>
+      </div>
+      <div class="gc" id="gc3">
+        <div class="gl">Section</div>
+        <div class="gv" id="gv-sec">Intro</div>
+        <div class="gs">Current view</div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div id="hint">
+      <span>Scroll</span>
+      <div class="arr-line"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Bridge: dark → cream -->
+<div class="bridge"></div>
+
+<!-- ══════════ PILLARS ══════════ -->
+<section class="cream section-pad" id="brand">
+  <div class="wrap">
+    <span class="section-num">01 — APPROACH</span>
+    <h2 class="section-title">為什麼選擇彣風製所</h2>
+    <p class="section-sub">有設計背景的攝影師，讓影像不只是記錄，而是空間設計的延伸。</p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num">01</div>
+        <div class="pillar-title">設計思維的攝影眼</div>
+        <p class="pillar-desc">建築系訓練給予的空間感知，讓每個拍攝角度都考量到動線、比例與材質的表達方式。進場前已經知道要站哪裡。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">02</div>
+        <div class="pillar-title">現場的細節捕捉者</div>
+        <p class="pillar-desc">光線、陰影、反射——每一個瞬間都是設計語言的展現。等待正確的時刻，而不是強行製造它。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">03</div>
+        <div class="pillar-title">品牌語言的轉譯者</div>
+        <p class="pillar-desc">農村品牌、商業空間、活動現場，各有不同的敘事語境。影像必須服務品牌，而不是展示技術。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SELECTED WORKS ══════════ -->
+<section class="section-pad" id="works">
+  <div class="wrap">
+    <span class="section-num">02 — SELECTED WORKS</span>
+    <h2 class="section-title">精選案例</h2>
+    <p class="section-sub">以下為四個代表性案例，涵蓋農村品牌、商業空間、餐飲環境與活動現場。</p>
+    <div class="works-grid">
+
+      <a class="work-card" href="portfolio.html#works">
+        <div class="work-no">NO.01</div>
+        <div class="work-type-tag">農村品牌</div>
+        <div class="work-name">蜜工坊</div>
+        <div class="work-loc">TAIWAN · 農村好店計畫</div>
+        <p class="work-desc">台灣蜂蜜農場品牌影像，捕捉農村生態的自然光感與產品質地。</p>
+        <div class="work-link-label">查看案例 →</div>
+      </a>
+
+      <a class="work-card" href="portfolio.html#works">
+        <div class="work-no">NO.09</div>
+        <div class="work-type-tag">商業空間</div>
+        <div class="work-name">大巨蛋 BabyGAP</div>
+        <div class="work-loc">TAIPEI · 台北大巨蛋</div>
+        <p class="work-desc">商業零售空間攝影，記錄品牌陳列與場域光線的視覺張力。</p>
+        <div class="work-link-label">查看案例 →</div>
+      </a>
+
+      <a class="work-card" href="portfolio.html#works">
+        <div class="work-no">NO.10</div>
+        <div class="work-type-tag">餐飲空間</div>
+        <div class="work-name">Bonbons</div>
+        <div class="work-loc">TAIWAN · 餐飲品牌</div>
+        <p class="work-desc">餐飲空間質感攝影，以設計師視角呈現桌面細節與空間氛圍的層次感。</p>
+        <div class="work-link-label">查看案例 →</div>
+      </a>
+
+      <a class="work-card" href="portfolio.html#works">
+        <div class="work-no">NO.11</div>
+        <div class="work-type-tag">活動紀錄</div>
+        <div class="work-name">打開台北講座</div>
+        <div class="work-loc">TAIPEI · 城市建築活動</div>
+        <p class="work-desc">建築與城市議題的講座現場紀錄，捕捉演講者與聽眾之間的真實互動。</p>
+        <div class="work-link-label">查看案例 →</div>
+      </a>
+
+    </div>
+    <a class="works-all-btn" href="portfolio.html#works">查看全部 13 個案例 →</a>
+  </div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section class="cream section-pad" id="about">
+  <div class="wrap">
+    <span class="section-num">03 — ABOUT</span>
+    <h2 class="section-title">韋林彣 · Joyce</h2>
+    <div class="about-inner">
+      <div>
+        <p class="about-quote">「建築系的訓練讓我在拍攝前，已經先讀懂了一個空間。」</p>
+        <p class="about-bio">
+          彣風製所創辦人，同時身兼建築設計師、室內設計師與商業攝影師。現任 B-STUDIO 室內部專案設計師，攝影工作以商業空間、農村品牌與活動現場為主。
+          <br><br>
+          設計與攝影對我而言是同一件事——都是找到正確的觀看角度，讓空間的語言被更多人理解。
+        </p>
+        <div class="skills-row">
+          <span class="skill-chip">AutoCAD</span>
+          <span class="skill-chip">Rhino 8</span>
+          <span class="skill-chip">Grasshopper</span>
+          <span class="skill-chip">Enscape</span>
+          <span class="skill-chip">D5 Render</span>
+          <span class="skill-chip">Lightroom</span>
+          <span class="skill-chip">Photoshop</span>
+          <span class="skill-chip">Premiere</span>
+        </div>
+      </div>
+      <div>
+        <div class="stat-row">
+          <div class="stat-cell">
+            <div class="stat-n">13</div>
+            <div class="stat-label">PROJECTS</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-n">4+</div>
+            <div class="stat-label">YRS EXP</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-n">2</div>
+            <div class="stat-label">FIELDS</div>
+          </div>
+        </div>
+        <table class="timeline">
+          <tr>
+            <td>2025/12 — NOW</td>
+            <td>B-STUDIO 室內部專案設計師</td>
+          </tr>
+          <tr>
+            <td>2025/03 — 12</td>
+            <td>Q-LAB 建築師事務所</td>
+          </tr>
+          <tr>
+            <td>2024/03 — 2025/03</td>
+            <td>十禾室內裝修有限公司</td>
+          </tr>
+          <tr>
+            <td>2023/06 — 2024/03</td>
+            <td>工合建築師事務所</td>
+          </tr>
+          <tr>
+            <td>攝影工作</td>
+            <td>彣風製所 wenwind（接案進行中）</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="section-pad" id="contact">
+  <div class="wrap">
+    <span class="section-num">04 — CONTACT</span>
+    <h2 class="section-title">聯絡合作</h2>
+    <p class="section-sub">有商業攝影、空間影像或設計合作需求，歡迎直接聯繫。</p>
+    <div class="contact-grid">
+
+      <div class="contact-card">
+        <div class="contact-method">Phone</div>
+        <div class="contact-val">0906-955-455</div>
+        <div class="contact-desc">可電話或 LINE 傳訊聯絡，說明需求。</div>
+        <button class="copy-btn" data-copy="0906-955-455">COPY</button>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-method">Email</div>
+        <div class="contact-val">joyce61218@gmail.com</div>
+        <div class="contact-desc">歡迎寄信說明拍攝日期、場地與需求規格。</div>
+        <button class="copy-btn" data-copy="joyce61218@gmail.com">COPY</button>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-method">Instagram</div>
+        <div class="contact-val">@wenwind0102</div>
+        <div class="contact-desc">作品更新與幕後花絮，歡迎追蹤。</div>
+        <button class="copy-btn" data-copy="@wenwind0102">COPY</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="cream">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">wen<span class="green">w</span>ind 彣風製所</div>
+        <div class="footer-tagline" style="margin-top:4px">Commercial Space Photography · Taiwan</div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#brand">關於品牌</a></li>
+        <li><a href="#works">精選作品</a></li>
+        <li><a href="portfolio.html">完整作品集</a></li>
+        <li><a href="#contact">聯絡</a></li>
+      </ul>
+      <div class="footer-tagline">© 2025 wenwind 彣風製所</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ── frame preload ── */
+  const TOTAL = 240;
+  const DIR   = 'frames/';
+  const SRCS  = Array.from({length: TOTAL}, (_, i) =>
+    DIR + 'frame_' + String(i+1).padStart(4,'0') + '.jpg'
+  );
+
+  const cache = new Array(TOTAL);
+  let loaded  = 0;
+  let shown   = false;
+
+  const loader  = document.getElementById('loader');
+  const ldrFill = document.getElementById('ldr-fill');
+  const ldrPct  = document.getElementById('ldr-pct');
+
+  SRCS.forEach((src, i) => {
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      if (img.naturalWidth) cache[i] = img;
+      loaded++;
+      const p = Math.floor(loaded / TOTAL * 100);
+      ldrFill.style.width = p + '%';
+      ldrPct.textContent  = p + '%';
+      if (!shown && loaded >= 30) { shown = true; setTimeout(() => loader.classList.add('out'), 300); }
+    };
+    img.src = src;
+  });
+  setTimeout(() => { if (!shown) { shown = true; loader.classList.add('out'); } }, 6000);
+
+  /* ── scroll animation ── */
+  const pbar     = document.getElementById('pbar');
+  const frameImg = document.getElementById('frame-img');
+  const hint     = document.getElementById('hint');
+  const panel    = document.getElementById('panel');
+  const gvFrame  = document.getElementById('gv-frame');
+  const gvPct    = document.getElementById('gv-pct');
+  const gvSec    = document.getElementById('gv-sec');
+  const tIntro   = document.getElementById('t-intro');
+  const f1       = document.getElementById('f1');
+  const f2       = document.getElementById('f2');
+  const f3       = document.getElementById('f3');
+  const gc1      = document.getElementById('gc1');
+  const gc2      = document.getElementById('gc2');
+  const gc3      = document.getElementById('gc3');
+  const nav      = document.getElementById('main-nav');
+  const sceneH   = document.getElementById('scene-wrap').scrollHeight;
+
+  let curFrame = 0;
+  let raf = false;
+
+  function show(el, on) { el.classList.toggle('on', on); }
+
+  function tick() {
+    raf = false;
+    const maxScroll = sceneH - window.innerHeight;
+    const p = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+
+    pbar.style.width = (p * 100).toFixed(2) + '%';
+
+    const target = Math.min(Math.floor(p * (TOTAL-1)) + 1, TOTAL);
+    if (target !== curFrame) {
+      curFrame = target;
+      const idx = target - 1;
+      const c = cache[idx];
+      frameImg.src = (c && c.complete && c.naturalWidth) ? c.src : SRCS[idx];
+      gvFrame.textContent = String(target).padStart(3,'0') + ' / 240';
+    }
+
+    gvPct.textContent  = Math.round(p * 100) + '%';
+    hint.style.opacity = p < 0.06 ? 1 : 0;
+
+    show(tIntro, p < 0.18);
+    show(panel,  p >= 0.12 && p < 0.92);
+    show(f1,     p >= 0.18 && p < 0.44);
+    show(f2,     p >= 0.44 && p < 0.70);
+    show(f3,     p >= 0.70 && p < 0.90);
+
+    gc1.classList.toggle('hi', p >= 0.18 && p < 0.44);
+    gc2.classList.toggle('hi', p >= 0.44 && p < 0.70);
+    gc3.classList.toggle('hi', p >= 0.70 && p < 0.90);
+
+    gvSec.textContent =
+      p < 0.18 ? 'Intro'  :
+      p < 0.44 ? 'Design' :
+      p < 0.70 ? 'Works'  :
+      p < 0.90 ? 'Collab' : 'End';
+
+    /* nav switches to light mode after sphere section */
+    const pastScene = window.scrollY > sceneH - window.innerHeight + 60;
+    nav.classList.toggle('light', pastScene);
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!raf) { raf = true; requestAnimationFrame(tick); }
+  }, { passive: true });
+
+  tick();
+
+  /* ── copy buttons ── */
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.copy;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(v).then(() => flash(btn)).catch(() => fallback(btn, v));
+      } else { fallback(btn, v); }
+    });
+  });
+  function flash(btn) {
+    btn.textContent = 'COPIED';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('copied'); }, 2000);
+  }
+  function fallback(btn, v) {
+    const t = document.createElement('textarea');
+    t.value = v; document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); flash(btn); } catch(e) {}
+    document.body.removeChild(t);
+  }
+
+})();
+</script>
+</body>
+</html>
