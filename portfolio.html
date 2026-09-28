@@ -2114,6 +2114,19 @@ section + section { border-top:1px solid var(--line); }
 </div><!-- /.light-zone -->
 
 <script>
+/* ── Hash intercept: force start from top regardless of #anchor in URL ── */
+(function () {
+  if (window.location.hash) {
+    history.replaceState(null, null, window.location.pathname + window.location.search);
+  }
+  window.scrollTo(0, 0);
+  document.documentElement.style.scrollBehavior = 'auto';
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.style.scrollBehavior = '';
+  });
+})();
+
 /* ── Sphere scroll animation ── */
 (function () {
   const TOTAL = 240;
